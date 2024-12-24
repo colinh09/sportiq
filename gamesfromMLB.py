@@ -8,9 +8,8 @@ Data set for more updated information, (like recent insights and shit). What sof
 Maybe just use ChatGPT (OpenAI) for open knowledge
 '''
 def get_mlb_scores():
-    url = "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard"
+    url = "http://site.api.espn.com/apis/site/v2/sports/baseball/mlb/teams"
     response = requests.get(url)
-    
     if response.status_code == 200:
         data = response.json()
         return data
@@ -18,33 +17,27 @@ def get_mlb_scores():
         return None
 
 
-def print_scores(data):
-    if data and 'events' in data:
-        for game in data['events']:
-            print(json.dumps(game, indent=2))
-    print(data.keys())
-
-def get_mlb_team_stats():
-    # Base URL for MLB team stats
-    url = "http://site.api.espn.com/apis/site/v2/sports/baseball/mlb/teams"
+def get_mlb_team_data(data):
+    #gets the teamDataApi Key among others things
+    #returns 2D dictionary with: official team name as the key, logo link, team abbreivation and teamurl as the values of the key (in a dictionary, describing what it is)
+    retDict = dict()
     
-
-    # Make the request
-    response = requests.get(url)
-    response.raise_for_status()
-    
-    # Parse the response
-    data = response.json()
-    abbrev = []
-    displayNames = []
     #change the number before teams
     path = data['sports'][0]['leagues'][0]['teams']
     for i in range(len(path)):
-        find = path[i]
-        print(find)
-        print(find.keys())
-    teams = []
+        find = path[i]['team']
+        abi = find['abbreviation']
+        slugDisplay = find['slug']
+        teamUrl = f"https://www.espn.com/mlb/team/stats/_/name/{abi}/{slugDisplay}"
+        teamLogo = f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abi}.png" #abritatry link for logo
+        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi.lower(), 'teamUrl': teamUrl}
+    return retDict
+    
+    
 
-scores = get_mlb_scores()
-sc = get_mlb_team_stats()
-#print_scores(scores)
+data = get_mlb_scores()
+dict = get_mlb_team_data(data)
+
+print(dict)
+
+
