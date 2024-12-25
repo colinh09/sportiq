@@ -35,9 +35,9 @@ def get_mlb_team_data(data):
         retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl}
     return retDict
     
-def get_team_leaders():
+def get_team_leaders(dict, team):
     # URL for Washington Nationals team stats
-    url = "https://www.espn.com/mlb/team/stats/_/name/WSH/washington-nationals"
+    url = dict[team]['teamUrl']
     
     # Send GET request and get the page content
     headers = {
@@ -48,20 +48,22 @@ def get_team_leaders():
     # Parse the HTML content
     
     soup = BeautifulSoup(response.content, 'html.parser')
-    script_tag = soup.find_all('script')[-5]
-    for string in script_tag.stripped_strings:
-        d = repr(string)
-        ret = None
-        if 'teamLeaders' in d:
-            ret = d
-    print(ret)
-    print(ret.find('teamLeaders'))
+    script_tags = soup.find_all('script')
+    ret = None
+    for i in range(len(script_tags)):
+        for string in script_tags[i].stripped_strings:
+            d = repr(string)
+            if 'teamLeaders' in d:
+                ret = d
+    firstIdx = ret.find('teamLeaders')
+    teamleaderInfo = ret[firstIdx:]
+    print(teamleaderInfo)
     #bs4 element tag
 
 
 data = get_mlb_scores()
 dict = get_mlb_team_data(data)
-get_team_leaders()
+get_team_leaders(dict, "Washington Nationals")
 
 
 
