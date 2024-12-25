@@ -1,5 +1,7 @@
 import requests
 import json
+from bs4 import BeautifulSoup
+import pandas as pd
 #https://gist.github.com/akeaswaran/b48b02f1c94f873c6655e7129910fc3b
 
 
@@ -30,14 +32,40 @@ def get_mlb_team_data(data):
         slugDisplay = find['slug']
         teamUrl = f"https://www.espn.com/mlb/team/stats/_/name/{abi}/{slugDisplay}"
         teamLogo = f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abi}.png" #abritatry link for logo
-        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi.lower(), 'teamUrl': teamUrl}
+        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl}
     return retDict
     
+def get_team_leaders():
+    # URL for Washington Nationals team stats
+    url = "https://www.espn.com/mlb/team/stats/_/name/WSH/washington-nationals"
     
+    # Send GET request and get the page content
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    response = requests.get(url, headers=headers)
+    
+    # Parse the HTML content
+    
+    soup = BeautifulSoup(response.content, 'html.parser')
+    script_tag = soup.find_all('script')[-5]
+    for string in script_tag.stripped_strings:
+        d = repr(string)
+        ret = None
+        if 'teamLeaders' in d:
+            ret = d
+    print(ret)
+    print(ret.find('teamLeaders'))
+    #bs4 element tag
+
 
 data = get_mlb_scores()
 dict = get_mlb_team_data(data)
+get_team_leaders()
 
-print(dict)
+
+
+
+
 
 
