@@ -35,8 +35,8 @@ def get_mlb_team_data(data):
         retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl}
     return retDict
     
-def get_team_leaders(dict, team):
-    # URL for Washington Nationals team stats
+def get_team_leaders_dict(dict, team):
+    #returns dictionary of best players on team info, and the ranking of the team in it's region
     url = dict[team]['teamUrl']
     
     # Send GET request and get the page content
@@ -50,21 +50,59 @@ def get_team_leaders(dict, team):
     soup = BeautifulSoup(response.content, 'html.parser')
     script_tags = soup.find_all('script')
     ret = None
+
+    
     for i in range(len(script_tags)):
         for string in script_tags[i].stripped_strings:
             d = repr(string)
             if 'teamLeaders' in d:
                 ret = d
+            
+    
     firstIdx = ret.find('teamLeaders')
-    teamleaderInfo = ret[firstIdx:]
-    print(teamleaderInfo)
+    teamleaderInfo = ret[firstIdx + 13:]
+    secondIdx = teamleaderInfo.find("dictionary")
+    teamleaderInfoNew = teamleaderInfo[:secondIdx - 2]
+    teamleaderInfoNew = teamleaderInfoNew.strip()
+    teamleaderInfoParse = json.loads(teamleaderInfoNew)
+    leadersParse = teamleaderInfoParse['leaders']
+    
+    standing_tag = soup.find_all('li')
+    standing = None
+    for i in range(len(standing_tag)):
+        for string in standing_tag[i].stripped_strings:
+            d = repr(string)
+            if 'NL ' in d:
+                standing = d
+
+    return (leadersParse, standing)
+
     #bs4 element tag
 
+def get_team_leaders(list):
+    #returns list of best players with mugshot
+    newAthletes = []
+    newAthleteInfo = []
+    for athlete in list:
+        newAddition = athlete['athlete']['name']
+        newHeadshot = athlete['athlete']['headshot']
+        newPosition = athlete['athlete']['position']
+        if newAddition not in newAthletes:
+            newAthletes.append(newAddition)
+            newAthleteInfo.append((newAddition, newPosition, newHeadshot))
+    return newAthleteInfo
 
-data = get_mlb_scores()
-dict = get_mlb_team_data(data)
-get_team_leaders(dict, "Washington Nationals")
+data = get_mlb_scores() #this is all mlb data
+dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
+#print(dict) 
+teamLeaderList = get_team_leaders_dict(dict, "Washington Nationals") #example team with Washington Nationals, gives us standing of this team and best player info.
+print(teamLeaderList)
+allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, headshot  #add this info on the team page.
 
+#on team page add best player info, team standing, use ai to teach about history of team.
+
+#there are no standings for the current season, could add that later.
+#print(allTeamLeaders)
 
 
 
