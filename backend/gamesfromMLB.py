@@ -95,14 +95,14 @@ def get_team_leaders(list):
 data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 #print(dict) 
-teamLeaderList = get_team_leaders_dict(dict, "Washington Nationals") #example team with Washington Nationals, gives us standing of this team and best player info.
+teamLeaderList = get_team_leaders_dict(dict, "Chicago Cubs") #example team with Washington Nationals, gives us standing of this team and best player info.
 print(teamLeaderList)
 allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, headshot  #add this info on the team page.
 
 #on team page add best player info, team standing, use ai to teach about history of team.
 
 #there are no standings for the current season, could add that later.
-#print(allTeamLeaders)
+print(allTeamLeaders)
 
 
 
