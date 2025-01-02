@@ -22,11 +22,12 @@ def get_mlb_scores():
 def get_mlb_team_data(data):
     #gets the teamDataApi Key among others things
     #returns 2D dictionary with: official team name as the key, logo link, team abbreivation and teamurl as the values of the key (in a dictionary, describing what it is)
-    retDict = dict()
+    retDict = {}
     
     #change the number before teams
     path = data['sports'][0]['leagues'][0]['teams']
     for i in range(len(path)):
+        print(i)
         find = path[i]['team']
         abi = find['abbreviation']
         slugDisplay = find['slug']
