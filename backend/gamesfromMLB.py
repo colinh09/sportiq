@@ -104,8 +104,8 @@ allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, hea
 #there are no standings for the current season, could add that later.
 print(allTeamLeaders)
 
-
-
-
-
-
+def return_team_list():
+    data = get_mlb_scores()
+    data_dict = get_mlb_team_data(data)
+    team_data_list = [value for value in data_dict.values()]
+    return team_data_list
