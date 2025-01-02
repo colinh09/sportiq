@@ -2,13 +2,7 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import pandas as pd
-#https://gist.github.com/akeaswaran/b48b02f1c94f873c6655e7129910fc3b
 
-
-'''
-Data set for more updated information, (like recent insights and shit). What soft knowledge do we need?
-Maybe just use ChatGPT (OpenAI) for open knowledge
-'''
 def get_mlb_scores():
     url = "http://site.api.espn.com/apis/site/v2/sports/baseball/mlb/teams"
     response = requests.get(url)
@@ -23,7 +17,6 @@ def get_mlb_team_data(data):
     #gets the teamDataApi Key among others things
     #returns 2D dictionary with: official team name as the key, logo link, team abbreivation and teamurl as the values of the key (in a dictionary, describing what it is)
     retDict = {}
-    
     #change the number before teams
     path = data['sports'][0]['leagues'][0]['teams']
     for i in range(len(path)):
@@ -102,12 +95,10 @@ allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, hea
 #on team page add best player info, team standing, use ai to teach about history of team.
 
 #there are no standings for the current season, could add that later.
-print(allTeamLeaders)
+#print(allTeamLeaders)
 
 def return_team_list():
     data = get_mlb_scores()
     data_dict = get_mlb_team_data(data)
-    for key in data_dict.keys():
-        data_dict[key]['displayName'] = key
     team_data_list = [value for value in data_dict.values()]
     return team_data_list

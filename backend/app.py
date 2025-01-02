@@ -5,7 +5,6 @@ from gamesFromMLB import *
 app = Flask(__name__, static_folder='static/build', template_folder='templates')
 CORS(app)  # Enable Cross-Origin Resource Sharing for React frontend
 
-
 @app.route('/api/mlb_team_list', methods=['GET'])
 def get_test_data():
     data_dict = return_team_list()
@@ -22,7 +21,6 @@ def index():
 @app.route('/api/test_message', methods=['GET'])
 def get_scores():
     return jsonify({"message": "Hello from Flask!"})
-
 
 if __name__ == '__main__':
     app.run(debug=True)
