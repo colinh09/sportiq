@@ -1,5 +1,6 @@
-:root {
+body {
   text-align: center;
+  align-items: center;
 }
 
 #App-header {
@@ -16,4 +17,9 @@
 .team-names {
   font-size: 20px;
   font-weight: bold;
+}
+
+#teams_button {
+  width: 100px;
+  height: 25px;
 }
