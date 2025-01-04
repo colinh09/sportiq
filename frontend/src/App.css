@@ -14,12 +14,65 @@ body {
   color: white;
 }
 
-.team-names {
+#teams-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.team-item {
+  flex: 1 1 calc(33.33% - 10px); /* Set each item to take ~1/3 of the container's width */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+  background-color: #f0f0f0;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.team-name {
   font-size: 20px;
   font-weight: bold;
 }
 
-#teams_button {
-  width: 100px;
-  height: 25px;
+#top-title {
+  background-color: #0044cc; /* Blue background */
+  color: #ffffff; /* White text */
+  text-align: center; /* Center the text */
+  padding: 20px; /* Add space around the text */
+  margin: 0; /* Remove any default margin */
+  font-family: 'Arial', sans-serif; /* Use a clean, modern font */
+  font-size: 2.5rem; /* Make the text large */
+  text-transform: uppercase; /* Capitalize all letters */
+  letter-spacing: 2px; /* Add spacing between letters for style */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Add a subtle shadow for depth */
+  border-bottom: 5px solid #003399; /* Add a darker border for emphasis */
+}
+
+.nav-button {
+  background-color: #0044cc; /* Blue background */
+  color: #ffffff; /* White text */
+  border: none; /* Remove default borders */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px; /* Add space inside the button */
+  font-size: 1rem; /* Adjust text size */
+  font-family: 'Arial', sans-serif; /* Use a modern font */
+  cursor: pointer; /* Show pointer cursor on hover */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  margin-right: 25px;
+  margin-top: 5px;
+}
+
+.nav-button:hover {
+  background-color: #003399; /* Darker blue on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.nav-button:active {
+  background-color: #002266; /* Even darker blue when clicked */
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2); /* Slightly reduce shadow */
+  transform: scale(0.98); /* Slightly shrink on click for feedback */
 }

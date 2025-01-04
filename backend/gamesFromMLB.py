@@ -27,13 +27,12 @@ def get_mlb_team_data(data):
     #change the number before teams
     path = data['sports'][0]['leagues'][0]['teams']
     for i in range(len(path)):
-        print(i)
         find = path[i]['team']
         abi = find['abbreviation']
         slugDisplay = find['slug']
         teamUrl = f"https://www.espn.com/mlb/team/stats/_/name/{abi}/{slugDisplay}"
         teamLogo = f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abi}.png" #abritatry link for logo
-        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl}
+        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'displayName': find['displayName']}
     return retDict
     
 def get_team_leaders_dict(dict, team):
@@ -97,7 +96,7 @@ data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 #print(dict) 
 teamLeaderList = get_team_leaders_dict(dict, "Chicago Cubs") #example team with Washington Nationals, gives us standing of this team and best player info.
-print(teamLeaderList)
+#print(teamLeaderList)
 allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, headshot  #add this info on the team page.
 
 #on team page add best player info, team standing, use ai to teach about history of team.
@@ -108,5 +107,7 @@ print(allTeamLeaders)
 def return_team_list():
     data = get_mlb_scores()
     data_dict = get_mlb_team_data(data)
+    for key in data_dict.keys():
+        data_dict[key]['displayName'] = key
     team_data_list = [value for value in data_dict.values()]
     return team_data_list
