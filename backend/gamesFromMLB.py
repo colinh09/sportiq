@@ -107,7 +107,5 @@ print(allTeamLeaders)
 def return_team_list():
     data = get_mlb_scores()
     data_dict = get_mlb_team_data(data)
-    for key in data_dict.keys():
-        data_dict[key]['displayName'] = key
     team_data_list = [value for value in data_dict.values()]
     return team_data_list
