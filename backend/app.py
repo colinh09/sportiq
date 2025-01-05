@@ -4,7 +4,7 @@ from gamesFromMLB import *
 
 app = Flask(__name__, static_folder='static/build', template_folder='templates')
 CORS(app)  # Enable Cross-Origin Resource Sharing for React frontend
-
+mlb_data_dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 
 @app.route('/api/mlb_team_list', methods=['GET'])
 def get_test_data():
@@ -15,14 +15,13 @@ def get_test_data():
 @app.route('/api/get_team_leaders')
 def index():
     team_name = request.args.get('teamName', 'Chicago Cubs')  # Default to 'Chicago Cubs' if no 'team-name' parameter is provided
-    leaders_unrefined, standing = get_team_leaders_dict(dict, team_name)
+    leaders_unrefined, standing = get_team_leaders_dict(mlb_data_dict, team_name)
     leaders_refined = get_team_leaders(leaders_unrefined)
     return jsonify({'standing': standing, 'leaders': leaders_refined})
 
 @app.route('/api/test_message', methods=['GET'])
 def get_scores():
     return jsonify({"message": "Hello from Flask!"})
-
 
 if __name__ == '__main__':
     app.run(debug=True)

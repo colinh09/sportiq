@@ -18,6 +18,15 @@ def get_mlb_scores():
     else:
         return None
 
+def remove_backslashes(obj):
+    if isinstance(obj, str):  # If it's a string, replace backslashes
+        return obj.replace("\\", "")
+    elif isinstance(obj, list):  # If it's a list, process each element
+        return [remove_backslashes(item) for item in obj]
+    elif isinstance(obj, dict):  # If it's a dictionary, process each key-value pair
+        return {key: remove_backslashes(value) for key, value in obj.items()}
+    else:  # If it's neither, return the object as is
+        return obj
 
 def get_mlb_team_data(data):
     #gets the teamDataApi Key among others things
@@ -35,9 +44,9 @@ def get_mlb_team_data(data):
         retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'displayName': find['displayName']}
     return retDict
     
-def get_team_leaders_dict(dict, team):
+def get_team_leaders_dict(mlb_data_dict, team):
     #returns dictionary of best players on team info, and the ranking of the team in it's region
-    url = dict[team]['teamUrl']
+    url = mlb_data_dict[team]['teamUrl']
     
     # Send GET request and get the page content
     headers = {
@@ -63,7 +72,7 @@ def get_team_leaders_dict(dict, team):
     teamleaderInfo = ret[firstIdx + 13:]
     secondIdx = teamleaderInfo.find("dictionary")
     teamleaderInfoNew = teamleaderInfo[:secondIdx - 2]
-    teamleaderInfoNew = teamleaderInfoNew.strip()
+    teamleaderInfoNew = remove_backslashes(teamleaderInfoNew.strip())
     print(f"teamLeaderInfoNew: {teamleaderInfoNew}")
     teamleaderInfoParse = json.loads(teamleaderInfoNew)
     leadersParse = teamleaderInfoParse['leaders']
@@ -73,7 +82,7 @@ def get_team_leaders_dict(dict, team):
     for i in range(len(standing_tag)):
         for string in standing_tag[i].stripped_strings:
             d = repr(string)
-            if 'NL ' in d:
+            if 'NL ' in d or 'AL ' in d:
                 standing = d
 
     return (leadersParse, standing)
@@ -94,9 +103,9 @@ def get_team_leaders(list):
     return newAthleteInfo
 
 data = get_mlb_scores() #this is all mlb data
-dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
+mlb_data_dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 #print(dict) 
-teamLeaderList = get_team_leaders_dict(dict, "Chicago Cubs") #example team with Washington Nationals, gives us standing of this team and best player info.
+teamLeaderList = get_team_leaders_dict(mlb_data_dict, "Chicago Cubs") #example team with Washington Nationals, gives us standing of this team and best player info.
 #print(teamLeaderList)
 allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, headshot  #add this info on the team page.
 
