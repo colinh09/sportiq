@@ -14,8 +14,8 @@ def get_test_data():
 
 @app.route('/api/get_team_leaders')
 def index():
-    page = request.args.get('team-name', 'Chicago Cubs')  # Default to 'Chicago Cubs' if no 'team-name' parameter is provided
-    const [leaders_unrefined, standing] = get_team_leaders_dict(dict, team-name);
+    team_name = request.args.get('teamName', 'Chicago Cubs')  # Default to 'Chicago Cubs' if no 'team-name' parameter is provided
+    leaders_unrefined, standing = get_team_leaders_dict(dict, team_name)
     leaders_refined = get_team_leaders(leaders_unrefined)
     return jsonify({'standing': standing, 'leaders': leaders_refined})
 

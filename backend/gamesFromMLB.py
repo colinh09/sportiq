@@ -64,6 +64,7 @@ def get_team_leaders_dict(dict, team):
     secondIdx = teamleaderInfo.find("dictionary")
     teamleaderInfoNew = teamleaderInfo[:secondIdx - 2]
     teamleaderInfoNew = teamleaderInfoNew.strip()
+    print(f"teamLeaderInfoNew: {teamleaderInfoNew}")
     teamleaderInfoParse = json.loads(teamleaderInfoNew)
     leadersParse = teamleaderInfoParse['leaders']
     
