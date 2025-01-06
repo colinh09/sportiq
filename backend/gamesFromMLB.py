@@ -44,12 +44,16 @@ def get_mlb_team_data(data):
         abi = find['abbreviation']
         slugDisplay = find['slug']
         teamUrl = f"https://www.espn.com/mlb/team/stats/_/name/{abi}/{slugDisplay}"
-        teamSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}/{slugDisplay}"
+        teamSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}" #doing this as a test for my next function for last 5 game history
+        
+
+        
         teamLogo = f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abi}.png" #abritatry link for logo
         retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'teamSchedule': teamSchedule, 'displayName': find['displayName']}
     return retDict
     
 def get_team_leaders_dict(mlb_data_dict, team):
+    #can definitelty make this function more efficient
     #returns dictionary of best players on team info, and the ranking of the team in it's region
     url = mlb_data_dict[team]['teamUrl']
     
@@ -110,6 +114,11 @@ def extract_year(url):
     year_match = re.search(r'-(\d{4})--', url)
     return year_match.group(1) if year_match else None
 
+
+'''
+
+CANT PROMISE THAT THESE TWO FUNCTIONS WORK AS INTENDED, WE DONT KNOW WHAT THE PAGE LOOKS LIKE WHEN THE SEASON STARTS. This is a draft version of these two functions and can be edited later.
+'''
 def next_game_team(dict, team): #returns the date and oppenent of the next scheduled game. takes in team full name. #IGNORING TIMEZONES FOR NOW (time zones don't matter, compare it to local time in EST all the time, cuz thats where the API request is coming from)
     
     scheduleUrl = dict[team]['teamSchedule']
@@ -123,10 +132,17 @@ def next_game_team(dict, team): #returns the date and oppenent of the next sched
     soup = BeautifulSoup(response.content, 'html.parser')
     while True:
         row = soup.find('tr', attrs={'data-idx': f'{i}'})
+        if not row:
+            break
+        tableinfo = row.find_all('td', class_='Table__TD')
+        time = tableinfo[2].text.strip()
+        if time.find('-') != -1:
+            i += 1
+            continue
         url = soup.find('a', class_='AnchorLink Schedule__ticket')['href']
         year = extract_year(url)
         date = row.find('td', class_='Table__TD').text.strip()
-        time = row.find_all('td', class_='Table__TD')[2].text.strip()
+        
         est = pytz.timezone('America/New_York')
         time_now = datetime.now(est).timestamp()
         date_time_str = f"{date} {time} {year}"
@@ -135,13 +151,68 @@ def next_game_team(dict, team): #returns the date and oppenent of the next sched
             break
         i += 1
     
-    opponent = row.find('div', class_='flex items-center opponent-logo').find_all('span')[-1].text.strip()
-    opponent_str = f"{opponent}"
+    if row:
+        opponent = row.find('div', class_='flex items-center opponent-logo').find_all('span')[-1].text.strip()
+        opponent_str = f"{opponent}"
     
-    return {'date': date_time_str, 'oppenent': opponent_str}
+    if date_time_str and opponent_str:
+        return {'date': date_time_str, 'oppenent': opponent_str}
+    else:
+        return "There are no more games this season"
 
-def outcome_of_last_game(dict, team): #basically game before as above
-    return 0
+
+
+def game_history_five(dict, team): #current win-lost record and outputs history of last 5 games history, with time in EST. #i wouldnt try and call this function on a page without games
+    scheduleUrl = dict[team]['teamSchedule']
+    
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    game_history = []
+    i = 1
+    response = requests.get(scheduleUrl, headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    while True:
+        row = soup.find('tr', attrs={'data-idx': f'{i}'})
+        if not row:
+            break
+        date = row.find('td', class_='Table__TD').text.strip()
+        time = row.find_all('td', class_='Table__TD')[2].text.strip()
+        if time.find('-') != -1:
+            i += 1
+            continue
+        url = soup.find('a', class_='AnchorLink Schedule__ticket')['href']
+        year = extract_year(url)
+        est = pytz.timezone('America/New_York')
+        time_now = datetime.now(est).timestamp()
+        date_time_str = f"{date} {time} {year}"
+        gametime = est.localize(datetime.strptime(date_time_str, '%a, %b %d %I:%M %p %Y')).timestamp()
+        if time_now < gametime:
+            break
+        i += 1
+    if not row and i != 1:
+        newrow = soup.find('tr', attrs = {'data-idx': f'{i - 1}'})
+        tableinfo = newrow.find_all('td', class_='Table__TD')
+        W_L_record = tableinfo[3].text.strip()
+        game_history.append({'record': W_L_record})
+        k = 1
+        while i > k:
+            result = f"{tableinfo[2].text.strip()}"
+            oppenent = f"{newrow.find('div', class_='flex items-center opponent-logo').find_all('span')[-1].text.strip()}"
+            date = f"{tableinfo[0].text.strip()}"
+            game_history.append({'oppenent': oppenent, 'game result': result, 'date': date})
+            if k == 5: 
+                break
+            k += 1
+            newrow = soup.find('tr', attrs={'data-idx': f'{i - k}'})
+            tableinfo = newrow.find_all('td', class_='Table__TD')
+    if not game_history: #maybe return the record from last season?
+        return "There are no played games this season." 
+    return game_history
+
+
+
 data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 
@@ -154,5 +225,5 @@ allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, hea
 #there are no standings for the current season, could add that later.
 #print(allTeamLeaders)
 
-print(next_game_team(dict, "Chicago Cubs"))
-print(time.localtime())
+
+print(game_history_five(dict, "Chicago Cubs"))
