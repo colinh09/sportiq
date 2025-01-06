@@ -44,12 +44,11 @@ def get_mlb_team_data(data):
         abi = find['abbreviation']
         slugDisplay = find['slug']
         teamUrl = f"https://www.espn.com/mlb/team/stats/_/name/{abi}/{slugDisplay}"
-        teamSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}" #doing this as a test for my next function for last 5 game history
-        
-
-        
+        year = datetime.now().year
+        teamSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}/season/{year}" #doing this as a test for my next function for last 5 game history
+        lastYearSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}/season/{year - 1}"
         teamLogo = f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abi}.png" #abritatry link for logo
-        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'teamSchedule': teamSchedule, 'displayName': find['displayName']}
+        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'teamSchedule': teamSchedule, 'lastYearSchedule': lastYearSchedule, 'displayName': find['displayName']}
     return retDict
     
 def get_team_leaders_dict(mlb_data_dict, team):
@@ -93,6 +92,8 @@ def get_team_leaders_dict(mlb_data_dict, team):
             d = repr(string)
             if 'NL ' in d or 'AL ' in d:
                 standing = d
+                
+
 
     return (leadersParse, standing)
 
@@ -110,15 +111,16 @@ def get_team_leaders(list):
             newAthletes.append(newAddition)
             newAthleteInfo.append((newAddition, newPosition, newHeadshot))
     return newAthleteInfo
-def extract_year(url):
-    year_match = re.search(r'-(\d{4})--', url)
-    return year_match.group(1) if year_match else None
+
 
 
 '''
 
 CANT PROMISE THAT THESE TWO FUNCTIONS WORK AS INTENDED, WE DONT KNOW WHAT THE PAGE LOOKS LIKE WHEN THE SEASON STARTS. This is a draft version of these two functions and can be edited later.
 '''
+def extract_year(url):
+    year_match = re.search(r'-(\d{4})--', url)
+    return year_match.group(1) if year_match else None
 def next_game_team(dict, team): #returns the date and oppenent of the next scheduled game. takes in team full name. #IGNORING TIMEZONES FOR NOW (time zones don't matter, compare it to local time in EST all the time, cuz thats where the API request is coming from)
     
     scheduleUrl = dict[team]['teamSchedule']
@@ -162,10 +164,8 @@ def next_game_team(dict, team): #returns the date and oppenent of the next sched
 
 
 
-def game_history_five(dict, team): #current win-lost record and outputs history of last 5 games history, with time in EST. #i wouldnt try and call this function on a page without games
-    scheduleUrl = dict[team]['teamSchedule']
+def game_history_five(dict, team, scheduleUrl): #current win-lost record and outputs history of last 5 games history, with time in EST. If none for this season, gets last season and puts a user message before information stated.
     
-
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
@@ -208,7 +208,9 @@ def game_history_five(dict, team): #current win-lost record and outputs history 
             newrow = soup.find('tr', attrs={'data-idx': f'{i - k}'})
             tableinfo = newrow.find_all('td', class_='Table__TD')
     if not game_history: #maybe return the record from last season?
-        return "There are no played games this season." 
+        print("There are no played games this season, pulling up last season history (appending this message to beginning of new_history list)")
+        game_history = game_history_five(dict, team, dict[team]['lastYearSchedule'])
+        game_history.insert(0, {'user_message': "There are no played games this season, pulling up last season history"})
     return game_history
 
 
@@ -224,6 +226,6 @@ allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, hea
 
 #there are no standings for the current season, could add that later.
 #print(allTeamLeaders)
-
-
-print(game_history_five(dict, "Chicago Cubs"))
+team = "Chicago Cubs"
+scheduleUrl = dict[team]['teamSchedule']
+print(game_history_five(dict, team, scheduleUrl))
