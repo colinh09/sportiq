@@ -6,7 +6,17 @@ function App() {
   const [teams, setTeams] = useState([]);
   const [teamData, setTeamData] = useState({});
   const [currentPage, setCurrentPage] = useState("home");
+  const [specificTeamData, setSpecificTeamData] = useState({"standing": "1", "Logo": "1", "displayName": 1, "teamAbbreviation": "1", "bestPlayers": "1"});
   const [fetchError, setFetchError] = useState(null);
+
+  function selectTeamView(curTeamData) {
+    if (!curTeamData) {
+      console.error("Invalid team data:", curTeamData);
+      return; // Prevent navigation if data is invalid
+    }
+    setSpecificTeamData(curTeamData);
+    setCurrentPage('specificTeam');
+  }
 
   useEffect(() => {
     const fetchTeamsAndData = async () => {
@@ -25,6 +35,9 @@ function App() {
           updatedTeamData[team.displayName] = {
             standing: teamLeadersResponse.data.standing,
             bestPlayers: teamLeadersResponse.data.leaders,
+            displayName: team.displayName,
+            teamAbbreviation: team.teamAbbreviation,
+            Logo: team.Logo
           };
           //console.log(updatedTeamData[team.displayName].bestPlayers);
         }
@@ -50,7 +63,7 @@ function App() {
               <p>Error: {fetchError}</p>
             ) : teams.length > 0 ? (
               teams.map((team, teamIndex) => (
-                <div className="team-item" key={teamIndex} style={{ marginBottom: "20px" }}>
+                <div className="team-item" key={teamIndex} style={{ marginBottom: "20px" }} onClick={() => selectTeamView(teamData[team.displayName])}>
                   <p className="team-name">
                     {team.displayName + " (" + team.teamAbbreviation + ")"}
                   </p>
@@ -60,19 +73,6 @@ function App() {
                     style={{ width: "100px" }}
                     className="team-logo"
                   />
-                  {teamData[team.displayName] ? (
-                    <div>
-                      <p>Standing: {teamData[team.displayName].standing}</p>
-                      <h3>Important Players</h3>
-                      {teamData[team.displayName].bestPlayers.map((player, playerIndex) => (
-                        <div className="player-item" key={playerIndex}>
-                          <p className="player-name">{player[0] + " (" + player[1] + ")"}</p>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>Loading team leaders...</p>
-                  )}
                 </div>
               ))
             ) : (
@@ -80,6 +80,42 @@ function App() {
             )}
           </div>
         );
+      case "specificTeam":
+        return (
+            <div id="team-container">
+              {fetchError ? (
+                <p>Error: {fetchError}</p>
+              ) : (
+                <div id="specific-team-item">
+                <p className="team-name">
+                    {specificTeamData.displayName + " (" + specificTeamData.teamAbbreviation + ")"}
+                </p>
+                <img
+                    src={specificTeamData.Logo}
+                    alt={`${specificTeamData.teamAbbreviation} logo`}
+                    style={{ width: "100px" }}
+                    className="team-logo"
+                />
+                <button onClick={() => setCurrentPage("teams")} class='back-button'>Back to teams</button>
+                <p>Standing: {specificTeamData.standing}</p>
+                <h3>Important Players</h3>
+                <div id='player'>
+                {specificTeamData.bestPlayers.map((player, playerIndex) => (
+                    <div className="player-item" key={playerIndex}>
+                    <p className="player-name">{player[0] + " (" + player[1] + ")"}</p>
+                    <img
+                        src={player[2]}
+                        alt={`${player[0]} photo`}
+                        style={{ width: "50px" }}
+                        className="player-photo"
+                    />
+                    </div>
+                ))}
+                </div>
+                </div>
+              )}
+            </div>
+          );
       case "about":
         return <p>About SportIQ: This is an app to explore MLB teams and scores.</p>;
       default:
