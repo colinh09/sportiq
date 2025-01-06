@@ -23,13 +23,13 @@ def get_mlb_scores():
         return None
 
 def remove_backslashes(obj):
-    if isinstance(obj, str):  # If it's a string, replace backslashes
+    if isinstance(obj, str):
         return obj.replace("\\", "")
-    elif isinstance(obj, list):  # If it's a list, process each element
+    elif isinstance(obj, list):
         return [remove_backslashes(item) for item in obj]
-    elif isinstance(obj, dict):  # If it's a dictionary, process each key-value pair
+    elif isinstance(obj, dict):
         return {key: remove_backslashes(value) for key, value in obj.items()}
-    else:  # If it's neither, return the object as is
+    else:
         return obj
 
 def get_mlb_team_data(data):
@@ -71,6 +71,7 @@ def get_team_leaders_dict(mlb_data_dict, team):
     
     for i in range(len(script_tags)):
         for string in script_tags[i].stripped_strings:
+            print("one")
             d = repr(string)
             if 'teamLeaders' in d:
                 ret = d

@@ -2,12 +2,31 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 
+function SelectionView({ selection = [] }) {
+    return (
+        <div>
+            <h2>Current selection:</h2>
+            <ul>
+                {selection.length > 0 ? (
+                    selection.map((dp, dpIndex) => (
+                        <li key={dpIndex}>{dp}</li>
+                    ))
+                ) : (
+                    <li>Nothing selected yet</li>
+                )}
+            </ul>
+            <button>Make a course!</button>
+        </div>
+    )
+}
+
 function App() {
   const [teams, setTeams] = useState([]);
   const [teamData, setTeamData] = useState({});
   const [currentPage, setCurrentPage] = useState("home");
   const [specificTeamData, setSpecificTeamData] = useState({"standing": "1", "Logo": "1", "displayName": 1, "teamAbbreviation": "1", "bestPlayers": "1"});
   const [fetchError, setFetchError] = useState(null);
+  const [bitesizeSelection, setBitesizeSelection] = useState([]);
 
   function selectTeamView(curTeamData) {
     if (!curTeamData) {
@@ -16,6 +35,10 @@ function App() {
     }
     setSpecificTeamData(curTeamData);
     setCurrentPage('specificTeam');
+  }
+
+  function addSelection(newData) {
+    setBitesizeSelection([...bitesizeSelection, newData]);
   }
 
   useEffect(() => {
@@ -73,6 +96,7 @@ function App() {
                     style={{ width: "100px" }}
                     className="team-logo"
                   />
+                  <button onClick={() => addSelection(team.displayName)} class='add-button'>Add to list</button>
                 </div>
               ))
             ) : (
@@ -118,6 +142,8 @@ function App() {
           );
       case "about":
         return <p>About SportIQ: This is an app to explore MLB teams and scores.</p>;
+      case "selection":
+        return <SelectionView selection={bitesizeSelection} />
       default:
         return <p>Page not found!</p>;
     }
@@ -137,6 +163,9 @@ function App() {
         </button>
         <button className="nav-button" onClick={() => setCurrentPage("about")}>
           About
+        </button>
+        <button className="nav-button" onClick={() => setCurrentPage("selection")}>
+          Selection
         </button>
       </nav>
 

@@ -132,6 +132,25 @@ body {
   background-color: #2980b9;
 }
 
+/* add button styles */
+.add-button {
+  display: inline-block;
+  margin: 10px auto 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #2980b9;
+}
+
 /* Standing text styles */
 #specific-team-item p {
   margin: 10px 0;
