@@ -2,6 +2,10 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import pandas as pd
+import time
+from datetime import datetime
+import re
+import pytz
 #https://gist.github.com/akeaswaran/b48b02f1c94f873c6655e7129910fc3b
 
 
@@ -40,8 +44,9 @@ def get_mlb_team_data(data):
         abi = find['abbreviation']
         slugDisplay = find['slug']
         teamUrl = f"https://www.espn.com/mlb/team/stats/_/name/{abi}/{slugDisplay}"
+        teamSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}/{slugDisplay}"
         teamLogo = f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abi}.png" #abritatry link for logo
-        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'displayName': find['displayName']}
+        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'teamSchedule': teamSchedule, 'displayName': find['displayName']}
     return retDict
     
 def get_team_leaders_dict(mlb_data_dict, team):
@@ -101,21 +106,53 @@ def get_team_leaders(list):
             newAthletes.append(newAddition)
             newAthleteInfo.append((newAddition, newPosition, newHeadshot))
     return newAthleteInfo
+def extract_year(url):
+    year_match = re.search(r'-(\d{4})--', url)
+    return year_match.group(1) if year_match else None
 
+def next_game_team(dict, team): #returns the date and oppenent of the next scheduled game. takes in team full name. #IGNORING TIMEZONES FOR NOW (time zones don't matter, compare it to local time in EST all the time, cuz thats where the API request is coming from)
+    
+    scheduleUrl = dict[team]['teamSchedule']
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+
+    i = 1
+    response = requests.get(scheduleUrl, headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    while True:
+        row = soup.find('tr', attrs={'data-idx': f'{i}'})
+        url = soup.find('a', class_='AnchorLink Schedule__ticket')['href']
+        year = extract_year(url)
+        date = row.find('td', class_='Table__TD').text.strip()
+        time = row.find_all('td', class_='Table__TD')[2].text.strip()
+        est = pytz.timezone('America/New_York')
+        time_now = datetime.now(est).timestamp()
+        date_time_str = f"{date} {time} {year}"
+        gametime = est.localize(datetime.strptime(date_time_str, '%a, %b %d %I:%M %p %Y')).timestamp()
+        if time_now < gametime:
+            break
+        i += 1
+    
+    opponent = row.find('div', class_='flex items-center opponent-logo').find_all('span')[-1].text.strip()
+    opponent_str = f"{opponent}"
+    
+    return {'date': date_time_str, 'oppenent': opponent_str}
+
+def outcome_of_last_game(dict, team): #basically game before as above
+    return 0
 data = get_mlb_scores() #this is all mlb data
-mlb_data_dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
-#print(dict) 
-teamLeaderList = get_team_leaders_dict(mlb_data_dict, "Chicago Cubs") #example team with Washington Nationals, gives us standing of this team and best player info.
-#print(teamLeaderList)
+dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
+
+teamLeaderList = get_team_leaders_dict(dict, "Chicago Cubs") #example team with Washington Nationals, gives us standing of this team and best player info.
+
 allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, headshot  #add this info on the team page.
 
 #on team page add best player info, team standing, use ai to teach about history of team.
 
 #there are no standings for the current season, could add that later.
-print(allTeamLeaders)
+#print(allTeamLeaders)
 
-def return_team_list():
-    data = get_mlb_scores()
-    data_dict = get_mlb_team_data(data)
-    team_data_list = [value for value in data_dict.values()]
-    return team_data_list
+print(next_game_team(dict, "Chicago Cubs"))
+print(time.localtime())
