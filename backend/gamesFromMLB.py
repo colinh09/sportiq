@@ -214,7 +214,13 @@ def game_history_five(dict, team, scheduleUrl): #current win-lost record and out
         game_history.insert(0, {'user_message': "There are no played games this season, pulling up last season history"})
     return game_history
 
-
+def return_team_list():
+    data = get_mlb_scores()
+    data_dict = get_mlb_team_data(data)
+    for key in data_dict.keys():
+        data_dict[key]['displayName'] = key
+    team_data_list = [value for value in data_dict.values()]
+    return team_data_list
 
 data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
