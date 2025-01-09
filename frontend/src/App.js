@@ -1,6 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import "./App.css";
 import axios from "axios";
+
+const logoUrl = '/SportIQ_Logo.jpg';
+
+const fadeoutContext = createContext();
+
+function Popup({ message = "error", isFading = true }) {
+    return (
+        <div className={`popup ${isFading ? 'fade-out' : ''}`}>
+            <p>{message}</p>
+        </div>
+    )
+}
+
+function SelectionView({ selection = [] }) {
+    return (
+        <div>
+            <h2>Current selection:</h2>
+            <ul>
+                {selection.length > 0 ? (
+                    selection.map((dp, dpIndex) => (
+                        <li key={dpIndex}>{dp}</li>
+                    ))
+                ) : (
+                    <li>Nothing selected yet</li>
+                )}
+            </ul>
+            <button>Make a course!</button>
+        </div>
+    )
+}
 
 function App() {
   const [teams, setTeams] = useState([]);
@@ -8,6 +38,10 @@ function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [specificTeamData, setSpecificTeamData] = useState({"standing": "1", "Logo": "1", "displayName": 1, "teamAbbreviation": "1", "bestPlayers": "1"});
   const [fetchError, setFetchError] = useState(null);
+  const [bitesizeSelection, setBitesizeSelection] = useState([]);
+  const [isPopupVisible, setPopupVisible] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("error");
 
   function selectTeamView(curTeamData) {
     if (!curTeamData) {
@@ -16,6 +50,20 @@ function App() {
     }
     setSpecificTeamData(curTeamData);
     setCurrentPage('specificTeam');
+  }
+
+  function showPopup(message) {
+    setPopupMessage(message);
+    setPopupVisible(true);
+  }
+
+  function addSelection(newData) {
+    if (!bitesizeSelection.includes(newData)) {
+        showPopup(`Added ${newData} to your selection!`);
+        setBitesizeSelection([...bitesizeSelection, newData]);
+    } else {
+        showPopup(`${newData} is already in your selection!`);
+    }
   }
 
   useEffect(() => {
@@ -52,10 +100,32 @@ function App() {
     
   }, []); // Empty dependency array ensures this runs only once on mount
 
+  useEffect(() => {
+    if (isPopupVisible) {
+      setTimeout(() => {
+        setFadeOut(true);
+        setTimeout(() => {
+          setPopupVisible(false);
+          setFadeOut(false);
+        }, 750);
+      }, 1400);
+    }
+  }, [isPopupVisible]);
+    
+  useEffect(() => {
+    setPopupVisible(false);
+    setFadeOut(false);
+  }, [currentPage])
+
   const renderPageContent = () => {
     switch (currentPage) {
       case "home":
-        return <h2>Welcome to SportIQ! Select a page from the navigation bar above.</h2>;
+        return (
+            <div>
+                <h2>Welcome to SportIQ! Select a page from the navigation bar above.</h2>
+                <img src={logoUrl} alt="SportIQ_Logo" id="app-logo" />
+            </div>
+        );
       case "teams":
         return (
           <div id="teams-container">
@@ -63,7 +133,7 @@ function App() {
               <p>Error: {fetchError}</p>
             ) : teams.length > 0 ? (
               teams.map((team, teamIndex) => (
-                <div className="team-item" key={teamIndex} style={{ marginBottom: "20px" }} onClick={() => selectTeamView(teamData[team.displayName])}>
+                <div className="team-item" key={teamIndex} style={{ marginBottom: "20px" }}>
                   <p className="team-name">
                     {team.displayName + " (" + team.teamAbbreviation + ")"}
                   </p>
@@ -72,7 +142,9 @@ function App() {
                     alt={`${team.teamAbbreviation} logo`}
                     style={{ width: "100px" }}
                     className="team-logo"
+                    onClick={() => selectTeamView(teamData[team.displayName])}
                   />
+                  <button onClick={() => addSelection(team.displayName)} class='add-button'>Add to list</button>
                 </div>
               ))
             ) : (
@@ -118,6 +190,8 @@ function App() {
           );
       case "about":
         return <p>About SportIQ: This is an app to explore MLB teams and scores.</p>;
+      case "selection":
+        return <SelectionView selection={bitesizeSelection} />
       default:
         return <p>Page not found!</p>;
     }
@@ -138,7 +212,16 @@ function App() {
         <button className="nav-button" onClick={() => setCurrentPage("about")}>
           About
         </button>
+        <button className="nav-button" onClick={() => setCurrentPage("selection")}>
+          Selection
+        </button>
       </nav>
+      {isPopupVisible && (
+        <fadeoutContext.Provider value={{ fadeOut }}>
+            <Popup message={popupMessage} isFading={fadeOut}></Popup>
+        </fadeoutContext.Provider>
+        
+      )}
 
       {/* Render the content based on the current page */}
       {renderPageContent()}

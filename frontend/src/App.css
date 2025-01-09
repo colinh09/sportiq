@@ -55,6 +55,13 @@ body {
   border-bottom: 5px solid #003399; 
 }
 
+#app-logo {
+  max-width: 300px; /* Limit the width of the logo */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Ensure it behaves as a block element */
+  margin: 20px auto; /* Center the logo horizontally and add vertical spacing */
+}
+
 .nav-button {
   background-color: #0044cc; 
   color: #ffffff; 
@@ -132,6 +139,33 @@ body {
   background-color: #2980b9;
 }
 
+/* add button styles */
+.add-button {
+  display: inline-block;
+  margin: 10px auto 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #2ecc71;  /* Changed to a different color for distinction */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;  /* Added transform transition for extra effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);  /* Added shadow for more depth */
+}
+
+.add-button:hover {
+  background-color: #27ae60;  /* Slightly darker green for hover effect */
+  transform: scale(1.05);  /* Added scale effect to match the hover transition style of the back button */
+}
+
+.add-button:active {
+  background-color: #1e8449;  /* Darker shade for active state */
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+  transform: scale(0.98);  /* Slightly reduces the size on click */
+}
+
 /* Standing text styles */
 #specific-team-item p {
   margin: 10px 0;
@@ -184,4 +218,59 @@ h3 {
   margin: 0 auto;
   border-radius: 50%;
   border: 2px solid #ddd;
+}
+
+/* Popup container styles */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff; /* White background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Above the backdrop */
+  text-align: center;
+  font-size: 1.2rem;
+  width: 300px; /* Adjust as needed */
+  max-width: 90%;
+  transition: opacity 2s ease;
+}
+
+.popup.fade-out {
+  animation: popup-disappear 0.75s ease-out forwards;
+}
+
+/* Popup message text styles */
+.popup p {
+  margin: 0;
+  color: #333; /* Dark text */
+}
+
+/* Add some animations for popup appearance */
+@keyframes popup-appear {
+  0% {
+    transform: translate(-50%, -60%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+@keyframes popup-disappear {
+  0% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -60%);
+    opacity: 0;
+  }
+}
+
+.popup {
+  animation: popup-appear 0.75s ease-out;
 }

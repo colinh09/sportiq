@@ -23,13 +23,13 @@ def get_mlb_scores():
         return None
 
 def remove_backslashes(obj):
-    if isinstance(obj, str):  # If it's a string, replace backslashes
+    if isinstance(obj, str):
         return obj.replace("\\", "")
-    elif isinstance(obj, list):  # If it's a list, process each element
+    elif isinstance(obj, list):
         return [remove_backslashes(item) for item in obj]
-    elif isinstance(obj, dict):  # If it's a dictionary, process each key-value pair
+    elif isinstance(obj, dict):
         return {key: remove_backslashes(value) for key, value in obj.items()}
-    else:  # If it's neither, return the object as is
+    else:
         return obj
 
 def get_mlb_team_data(data):
@@ -71,6 +71,7 @@ def get_team_leaders_dict(mlb_data_dict, team):
     
     for i in range(len(script_tags)):
         for string in script_tags[i].stripped_strings:
+            print("one")
             d = repr(string)
             if 'teamLeaders' in d:
                 ret = d
@@ -213,7 +214,13 @@ def game_history_five(dict, team, scheduleUrl): #current win-lost record and out
         game_history.insert(0, {'user_message': "There are no played games this season, pulling up last season history"})
     return game_history
 
-
+def return_team_list():
+    data = get_mlb_scores()
+    data_dict = get_mlb_team_data(data)
+    for key in data_dict.keys():
+        data_dict[key]['displayName'] = key
+    team_data_list = [value for value in data_dict.values()]
+    return team_data_list
 
 data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
