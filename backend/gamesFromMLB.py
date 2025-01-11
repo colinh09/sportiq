@@ -273,16 +273,5 @@ def return_team_list():
 data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 
-#teamLeaderList = get_team_leaders_dict(dict, "Chicago Cubs") #example team with Washington Nationals, gives us standing of this team and best player info.
 
-#allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, headshot  #add this info on the team page.
-
-
-#on team page add best player info, team standing, use ai to teach about history of team.
-
-#there are no standings for the current season, could add that later.
-#print(allTeamLeaders)
-#team = "Chicago Cubs"
-#scheduleUrl = dict[team]['teamSchedule']
-#print(game_history_five(dict, team, scheduleUrl))
 get_all_players(dict, "Chicago Cubs")
