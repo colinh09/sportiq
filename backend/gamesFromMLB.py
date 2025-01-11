@@ -44,11 +44,12 @@ def get_mlb_team_data(data):
         abi = find['abbreviation']
         slugDisplay = find['slug']
         teamUrl = f"https://www.espn.com/mlb/team/stats/_/name/{abi}/{slugDisplay}"
+        rosterUrl = f"https://www.espn.com/mlb/team/roster/_/name/{abi}"
         year = datetime.now().year
         teamSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}/season/{year}" #doing this as a test for my next function for last 5 game history
         lastYearSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}/season/{year - 1}"
         teamLogo = f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abi}.png" #abritatry link for logo
-        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'teamSchedule': teamSchedule, 'lastYearSchedule': lastYearSchedule, 'displayName': find['displayName']}
+        retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'teamSchedule': teamSchedule, 'rosterUrl': rosterUrl, 'lastYearSchedule': lastYearSchedule, 'displayName': find['displayName']}
     return retDict
     
 def get_team_leaders_dict(mlb_data_dict, team):
@@ -71,7 +72,6 @@ def get_team_leaders_dict(mlb_data_dict, team):
     
     for i in range(len(script_tags)):
         for string in script_tags[i].stripped_strings:
-            print("one")
             d = repr(string)
             if 'teamLeaders' in d:
                 ret = d
@@ -102,24 +102,72 @@ def get_team_leaders_dict(mlb_data_dict, team):
 
 def get_team_leaders(list):
     #returns list of best players with mugshot
-    newAthletes = []
+    newAthletes = set()
     newAthleteInfo = []
     for athlete in list:
         newAddition = athlete['athlete']['name']
         newHeadshot = athlete['athlete']['headshot']
         newPosition = athlete['athlete']['position']
         if newAddition not in newAthletes:
-            newAthletes.append(newAddition)
+            newAthletes.add(newAddition)
             newAthleteInfo.append((newAddition, newPosition, newHeadshot))
     return newAthleteInfo
 
+def get_all_players(mlb_data_dict, team): #return a dictionary of list, similar to above, except the key is either Pitchers, Catchers, Infielders, or Outfielders
+    url = mlb_data_dict[team]['rosterUrl']
 
+    players_dict = {}
+
+    # Send GET request and get the page content
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    response = requests.get(url, headers=headers)
+    
+    # Parse the HTML content
+    
+    roster_soup = BeautifulSoup(response.content, 'html.parser')
+
+    positions_tables = roster_soup.find_all('div', class_='ResponsiveTable')
+
+    group = None
+    for table in positions_tables:
+        
+        group = table.find('div', class_='Table__Title') #Pitchers, Catchers, Infielders, or Outfielders
+        if not group:
+            continue
+        player_rows = roster_soup.find_all('tr', class_='Table__TR')
+        
+        for table in player_rows:
+            name = None
+            position = None
+            headshot = None
+            
+            line = table.find('div')
+            
+            position_line = table.find_all('td')
+           
+            if position_line:
+                position = position_line[2].find('div').text
+            if line:
+                parsed = line.find('div').find('figure').find('div', class_="Image__Wrapper aspect-ratio--child")
+                headshot = parsed.find('img')['alt']
+                name = parsed.find('img')['title']
+
+            if not name:
+                continue
+            player_info = (name, position, headshot)
+            if group.text not in players_dict:
+                players_dict[group.text] = [player_info]
+            else:
+                players_dict[group.text].append(player_info)
+    return players_dict #similar return as function above, but it is a dictionary, telling us if they are a pitcher, infielder, outfielder or catcher
 
 '''
 
 CANT PROMISE THAT THESE TWO FUNCTIONS WORK AS INTENDED, WE DONT KNOW WHAT THE PAGE LOOKS LIKE WHEN THE SEASON STARTS. This is a draft version of these two functions and can be edited later.
 '''
-def extract_year(url):
+def extract_year(url): #say we are in december, the next game is in febuary. Thus cannot take the current year.
     year_match = re.search(r'-(\d{4})--', url)
     return year_match.group(1) if year_match else None
 def next_game_team(dict, team): #returns the date and oppenent of the next scheduled game. takes in team full name. #IGNORING TIMEZONES FOR NOW (time zones don't matter, compare it to local time in EST all the time, cuz thats where the API request is coming from)
@@ -225,14 +273,16 @@ def return_team_list():
 data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 
-teamLeaderList = get_team_leaders_dict(dict, "Chicago Cubs") #example team with Washington Nationals, gives us standing of this team and best player info.
+#teamLeaderList = get_team_leaders_dict(dict, "Chicago Cubs") #example team with Washington Nationals, gives us standing of this team and best player info.
 
-allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, headshot  #add this info on the team page.
+#allTeamLeaders = get_team_leaders(teamLeaderList[0]) #Tuple: name, position, headshot  #add this info on the team page.
+
 
 #on team page add best player info, team standing, use ai to teach about history of team.
 
 #there are no standings for the current season, could add that later.
 #print(allTeamLeaders)
-team = "Chicago Cubs"
-scheduleUrl = dict[team]['teamSchedule']
-print(game_history_five(dict, team, scheduleUrl))
+#team = "Chicago Cubs"
+#scheduleUrl = dict[team]['teamSchedule']
+#print(game_history_five(dict, team, scheduleUrl))
+get_all_players(dict, "Chicago Cubs")
