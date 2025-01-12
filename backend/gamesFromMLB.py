@@ -47,7 +47,7 @@ def get_mlb_team_data(data):
         rosterUrl = f"https://www.espn.com/mlb/team/roster/_/name/{abi}"
         year = datetime.now().year
         teamSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}/season/{year}" #doing this as a test for my next function for last 5 game history
-        lastYearSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}/season/{year - 1}"
+        lastYearSchedule = f"https://www.espn.com/mlb/team/schedule/_/name/{abi}/season/{year - 1}/seasontype/2/half/2"
         teamLogo = f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abi}.png" #abritatry link for logo
         retDict[find['displayName']] = {'Logo': teamLogo, 'teamAbbreviation': abi, 'teamUrl': teamUrl, 'teamSchedule': teamSchedule, 'rosterUrl': rosterUrl, 'lastYearSchedule': lastYearSchedule, 'displayName': find['displayName']}
     return retDict
@@ -228,28 +228,39 @@ def game_history_five(dict, team, scheduleUrl): #current win-lost record and out
         if not row:
             break
         date = row.find('td', class_='Table__TD').text.strip()
-        time = row.find_all('td', class_='Table__TD')[2].text.strip()
-        if time.find('-') != -1:
+        part = row.find_all('td', class_='Table__TD')
+        if len(part) < 3:
+            break
+        time = part[2].text.strip()
+        if time.find('-') != -1 or date.find('Postponed'):
             i += 1
             continue
         year = extract_year(repr(soup.find('title')))
-        
         est = pytz.timezone('America/New_York')
         time_now = datetime.now(est).timestamp()
         date_time_str = f"{date} {time} {year}"
+        
         gametime = est.localize(datetime.strptime(date_time_str, '%a, %b %d %I:%M %p %Y')).timestamp()
         if time_now < gametime:
             break
         i += 1
     if not row and i != 1:
         newrow = soup.find('tr', attrs = {'data-idx': f'{i - 1}'})
+        
         tableinfo = newrow.find_all('td', class_='Table__TD')
         W_L_record = tableinfo[3].text.strip()
         game_history.append({'record': W_L_record})
         k = 1
         while i > k:
             result = f"{tableinfo[2].text.strip()}"
-            oppenent = f"{newrow.find('div', class_='flex items-center opponent-logo').find_all('span')[-1].text.strip()}"
+            if not newrow:
+                continue
+            partition = newrow.find('div', class_='flex items-center opponent-logo')
+            if not partition:
+                k += 1
+                newrow = soup.find('tr', attrs={'data-idx': f'{i - k}'})
+                continue
+            oppenent = f"{partition.find_all('span')[-1].text.strip()}"
             date = f"{tableinfo[0].text.strip()}"
             game_history.append({'oppenent': oppenent, 'game result': result, 'date': date})
             if k == 5: 
@@ -258,7 +269,7 @@ def game_history_five(dict, team, scheduleUrl): #current win-lost record and out
             newrow = soup.find('tr', attrs={'data-idx': f'{i - k}'})
             tableinfo = newrow.find_all('td', class_='Table__TD')
     if not game_history: #maybe return the record from last season?
-        print("There are no played games this season, pulling up last season history (appending this message to beginning of new_history list)")
+        #print("There are no played games this season, pulling up last season history (appending this message to beginning of new_history list)")
         game_history = game_history_five(dict, team, dict[team]['lastYearSchedule'])
         game_history.insert(0, {'user_message': "There are no played games this season, pulling up last season history"})
     return game_history
@@ -290,4 +301,8 @@ def get_all_players_list(MLBdata):
 data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 
-returnVal = next_game_team(dict, "Chicago Cubs")
+
+for team in dict:
+    print('\n' + team)
+    print(game_history_five(dict, team, dict[team]['lastYearSchedule']))
+
