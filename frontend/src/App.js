@@ -5,6 +5,7 @@ import axios from "axios";
 const logoUrl = '/SportIQ_Logo.jpg';
 
 const fadeoutContext = createContext();
+const searchContext = createContext();
 
 function Popup({ message = "error", isFading = true }) {
     return (
@@ -13,6 +14,26 @@ function Popup({ message = "error", isFading = true }) {
         </div>
     )
 }
+
+const SearchBar = () => {
+  const { searchQuery, setSearchQuery } = useContext(searchContext);
+
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  return (
+    <div id="search-bar">
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={handleInputChange}
+        placeholder="Search keywords separated by spaces"
+        id="search-input"
+      />
+    </div>
+  );
+};
 
 function SelectionView({ selection = [] }) {
     return (
@@ -42,6 +63,7 @@ function App() {
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const [popupMessage, setPopupMessage] = useState("error");
+  const [searchQuery, setSearchQuery] = useState("");
 
   function selectTeamView(curTeamData) {
     if (!curTeamData) {
@@ -144,7 +166,7 @@ function App() {
                     className="team-logo"
                     onClick={() => selectTeamView(teamData[team.displayName])}
                   />
-                  <button onClick={() => addSelection(team.displayName)} class='add-button'>Add to list</button>
+                  <button onClick={() => addSelection(team.displayName + " (team)")} class='add-button'>Add to list</button>
                 </div>
               ))
             ) : (
@@ -173,14 +195,14 @@ function App() {
                 <h3>Important Players</h3>
                 <div id='player'>
                 {specificTeamData.bestPlayers.map((player, playerIndex) => (
-                    <div className="player-item" key={playerIndex}>
-                    <p className="player-name">{player[0] + " (" + player[1] + ")"}</p>
-                    <img
+                    <div className="player-item" key={playerIndex} onClick={() => addSelection(player[0] + " (player)")}>
+                      <p className="player-name">{player[0] + " (" + player[1] + ")"}</p>
+                      <img
                         src={player[2]}
                         alt={`${player[0]} photo`}
                         style={{ width: "50px" }}
                         className="player-photo"
-                    />
+                      />
                     </div>
                 ))}
                 </div>
@@ -188,6 +210,18 @@ function App() {
               )}
             </div>
           );
+          case "search":
+            return (
+              <searchContext.Provider value={{ searchQuery, setSearchQuery }}>
+                <div id="search-container">
+                  <h1>Search For Data</h1>
+                  <SearchBar/>
+                  <button id="#search-button" onClick={() => showPopup(searchQuery)}>
+                    Search
+                  </button>
+                </div>
+              </searchContext.Provider>
+            );
       case "about":
         return <p>About SportIQ: This is an app to explore MLB teams and scores.</p>;
       case "selection":
@@ -212,6 +246,9 @@ function App() {
         <button className="nav-button" onClick={() => setCurrentPage("about")}>
           About
         </button>
+        <button className="nav-button" onClick={() => setCurrentPage("search")}>
+          Search
+        </button>
         <button className="nav-button" onClick={() => setCurrentPage("selection")}>
           Selection
         </button>
@@ -220,7 +257,6 @@ function App() {
         <fadeoutContext.Provider value={{ fadeOut }}>
             <Popup message={popupMessage} isFading={fadeOut}></Popup>
         </fadeoutContext.Provider>
-        
       )}
 
       {/* Render the content based on the current page */}

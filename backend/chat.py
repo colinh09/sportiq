@@ -5,6 +5,12 @@ import re
 import json
 load_dotenv()
 
+###   COMMENT FROM HAMZA
+###     The user can currently select topics (anything searched for with the hashtag search function, so
+###     games, teams, players, rules, plays, etc.) which they specifically want to learn about. Perhaps you can
+###     include this as one of the options for the bitesize learning plan/flashcard creation? 
+
+
 print("Loading chat.py...")
 client = AzureOpenAI(
     api_key = os.getenv("AZURE_OPENAI_API_KEY"),  
@@ -184,7 +190,7 @@ def typical_chat_loop(team_name = None): #allow the user to ask questions about 
         user_input = input("You: ")
         
         # commands for quitting out for the user (write these as instuctions or button clicks)
-        if user_input.lower() in 'exit':
+        if user_input.lower() in 'exit': # <-- (From Hamza) shouldn't you swap what's before and after the in?
             #save before quitting
             with open(filename, "w") as file:
                 json.dump(conversation, file)

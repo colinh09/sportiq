@@ -270,8 +270,24 @@ def return_team_list():
     team_data_list = [value for value in data_dict.values()]
     return team_data_list
 
+LISTINGS = ['Pitchers', 'Catchers', 'Infielders']
+def get_all_players_list(MLBdata):
+    allTeamNames = map(lambda team: team['displayName'], return_team_list())
+    allPlayers = []
+    for teamName in allTeamNames:
+        playerDict = get_all_players(MLBdata, teamName)
+        for listing in LISTINGS:
+            curPlayerList = playerDict[listing]
+            curPlayerList = map(lambda curPlayer: curPlayer + (teamName, [listing],), curPlayerList)
+            for curPlayer in curPlayerList:
+                if curPlayer in allPlayers:
+                    existingListings = allPlayers[curPlayer][4]
+                    curPlayer = curPlayer[:4] + (existingListings + curPlayer[4],)
+                allPlayers.append(curPlayer)
+    return allPlayers
+
 data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 
-
-get_all_players(dict, "Chicago Cubs")
+returnVal = get_all_players(dict, "Chicago Cubs")
+#print(returnVal)
