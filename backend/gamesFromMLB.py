@@ -299,10 +299,4 @@ def get_all_players_list(MLBdata):
     return allPlayers
 
 data = get_mlb_scores() #this is all mlb data
-dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
-
-
-for team in dict:
-    print('\n' + team)
-    print(game_history_five(dict, team, dict[team]['lastYearSchedule']))
-
+mlb_dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data

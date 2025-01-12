@@ -170,8 +170,67 @@ def create_flashcards_from_ai_output(bitsize_learn_response):
     return parsed_flashcards
 
 
-def make_flashcards_from_selection(selection): #selection is name, Atlanta Braves(team) Cetric Mullins (player) the Blab(team)
-    return None
+def make_flashcards_from_selection(selection):
+    parsed_flashcards = []
+    json_file_path = 'flashcards.json'
+
+    # Initialize empty list for existing flashcards
+    try:
+        with open(json_file_path, 'r') as file:
+            existing_flashcards = json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        existing_flashcards = []
+        # Create empty JSON file if it doesn't exist
+        with open(json_file_path, 'w') as file:
+            json.dump([], file)
+
+    for term in selection:
+        system_prompt = f"You are an MLB assistant, that is all knowing about MLB. Make in-depth flashcards based on this {term}. The format of each selection is 'Noun('player', 'team' or 'rule')', denoting the thing outside the parenthesis as the specific thing we want to look into. You should go into detail about team history, player history, or a thorough understanding of rules, depending on each selection. Multiple selections are allowed. Name the topic of what each flashcard is about."
+
+        conversation = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"Do not repeat flashcard Concepts from this set{existing_flashcards}"}
+        ]
+                            
+        response = client.chat.completions.create(
+            model=os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT"),
+            messages=conversation,
+            temperature=0.7,
+            max_tokens=1000
+        )
+        
+        reply = response.choices[0].message.content
+        reply = reply.replace('*', "")
+        flashcards = reply.split("Flashcard")
+        
+        for flashcard in flashcards:
+            startIdx = flashcard.find('Concept')
+            if startIdx != -1:
+                try:
+                    startIdx += len('Concept: ')
+                    defIdx = flashcard.index(' \nDefinition')
+                    concept = flashcard[startIdx:defIdx - 1]
+                    defIdx += len(' \nDefinition: ')
+                    definition = flashcard[defIdx:flashcard.find('.')]
+                    parsed = {
+                        'Topic': term[:term.find('(')].strip(),
+                        'Concept': concept.strip(),
+                        'Definition': definition.strip(),
+                        'Learn Status': 0
+                    }
+                    parsed_flashcards.append(parsed)
+                except ValueError:
+                    continue
+
+    # Update existing_flashcards after processing all terms
+    existing_flashcards.extend(parsed_flashcards)
+    with open(json_file_path, 'w') as file:
+        json.dump(existing_flashcards, file, indent=4)
+    
+    return parsed_flashcards
+
+
+
 
 
     
@@ -232,6 +291,4 @@ def typical_chat_loop(team_name = None): #allow the user to ask questions about 
         print("\nAssistant:", assistant_reply, "\n") #send these to the server
 
 
-for i in range(10):
-    r = bitsize_learn('bitsize')
-    create_flashcards_from_ai_output(r)
+print(make_flashcards_from_selection(['Chicago Cubs(team)', 'Justin Verlander(player)']))
