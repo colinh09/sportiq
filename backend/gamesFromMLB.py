@@ -288,6 +288,13 @@ def get_all_players_list(MLBdata):
     return allPlayers
 
 data = get_mlb_scores() #this is all mlb data
-dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
+mlb_dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 
-returnVal = next_game_team(dict, "Chicago Cubs")
+teamNames = map(lambda team: team['displayName'], return_team_list())
+for team in teamNames:
+    print(f"team: {team}")
+    print(f"dict: {mlb_dict[team]}")
+    print(game_history_five(mlb_dict, team, mlb_dict[team]['lastYearSchedule']))
+    print("\n\n")
+
+#get_all_players(mlb_dict, "Chicago Cubs")
