@@ -84,9 +84,9 @@ def bitsize_learn(bitsize): #make this the server, for now is a txt. name of the
     prev_content = f1.read()
 
     if prev_content: #checking if file is empty
-        conversation.append({"role": "user", "content": prev_content + "\n\n Using what is above, tell me about the next logical thing about MLB in a bitsize learning module. Name and number this module"})
+        conversation.append({"role": "user", "content": prev_content + "\n\n Using what is above, tell me about the next logical thing about MLB in a bitsize learning module. Preface it as 'Module Title'. Don't use any words that indicate order, such as first or third. Elaborate on the previous information (the terms that are above). Only say once. DO NOT REPEAT INFORMATION"})
     else:
-        conversation.append({"role": "user", "content": "In a bitsize module about MLB, tell me information about the first subject a person should learn, while trying to understand MLB. Name this module"})
+        conversation.append({"role": "user", "content": "In a bitsize module about MLB, tell me information about the first subject a person should learn, while trying to understand MLB. Preface it as 'Module Title'. Don't use any words that indicate order, such as first or third. Elaborate on the previous information (the terms that are above). If 'Baseball is played between two teams, each consisting of nine players.' is already said, do not say it again. DO NOT REPEAT INFORMATION"})
 
     # Get response from Azure OpenAI
     response = client.chat.completions.create(
@@ -95,15 +95,15 @@ def bitsize_learn(bitsize): #make this the server, for now is a txt. name of the
         temperature=0.7,
         max_tokens=1000
     )
-    
-    
+
+
     reply = response.choices[0].message.content
-    
-    module_name = re.search(r'(?i)module\s*name\s*:\s*(.*)', reply)
+
+    module_name = re.search(r'(?i)Module\s*Title\s*:\s*(.*)', reply)
     module_name = module_name.group(1).strip() if module_name else None
+    module_name = module_name.replace('*', '')
     
-    print(reply)
-    
+
     f1.write(reply) #bold lesson number on the REACT application
     f1.write('\n' * 5)
     f1.close()
@@ -113,17 +113,26 @@ def bitsize_learn(bitsize): #make this the server, for now is a txt. name of the
 
 
 
+
 #Require flashcard creation on general case, plan to do this later. Must test current functions one by one
 def create_flashcards_from_ai_output(bitsize_learn_response):
     parsed_flashcards = []
     #add flashcards to a json file.
     module_name = bitsize_learn_response[0]
     ai_response = bitsize_learn_response[1]
-    system_prompt = f"Create flashcards for the key baseball concepts discussed inside the prompt. Seperate each flashcard into 'Concept' and 'Definition' in the output. Make as many that seem fit, that provide unique concepts for key baseball concepts and teams. Make sure the definition is always one sentence long"
+    system_prompt = f"Create flashcards for the key baseball concepts discussed inside the prompt. Seperate each flashcard into 'Concept' and 'Definition' in the output. Do not put a dash (-) before 'Concept' or 'Definition' Make as many that seem fit, that provide unique concepts for key baseball concepts and teams. Make sure the definition is always one sentence long"
 
     conversation = [{"role": "system", "content": system_prompt}]
 
-    conversation.append({"role": "user", "content": ai_response})
+    json_file_path = 'flashcards.json'
+    try:
+        with open(json_file_path, 'r') as file:
+            existing_flashcards = json.load(file)
+            file.close()
+    except (FileNotFoundError, json.JSONDecodeError):
+        existing_flashcards = []
+    
+    conversation.append({"role": "user", "content": f"{ai_response} + Do not repeat flashcard Concepts from this set{existing_flashcards}"})
                         
     response = client.chat.completions.create(
         model=os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT"),
@@ -137,11 +146,11 @@ def create_flashcards_from_ai_output(bitsize_learn_response):
     flashcards = reply.split("Flashcard")
     
     
-    print(flashcards)
+    
     for flashcard in flashcards:
         startIdx = flashcard.find('Concept')
         
-        print(flashcard)
+        
         if startIdx != -1:
             startIdx += len('Concept: ')
             defIdx = flashcard.index(' \nDefinition')
@@ -151,17 +160,20 @@ def create_flashcards_from_ai_output(bitsize_learn_response):
             parsed = {'Topic': module_name, 'Concept': concept, 'Definition': definition, 'Learn Status': 0} #learn status 0 = don't know, 1 = learning, 2 = know
             parsed_flashcards.append(parsed)
 
-    json_file_path = 'flashcards.json'
-    try:
-        with open(json_file_path, 'r') as file:
-            existing_flashcards = json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        existing_flashcards = []
+    
+    print(parsed_flashcards)
 
     existing_flashcards.extend(parsed_flashcards)
     with open(json_file_path, 'w') as file:
         json.dump(existing_flashcards, file, indent=4)
+        file.close()
     return parsed_flashcards
+
+
+def make_flashcards_from_selection(selection): #selection is name, Atlanta Braves(team) Cetric Mullins (player) the Blab(team)
+    return None
+
+
     
     
 
@@ -220,4 +232,6 @@ def typical_chat_loop(team_name = None): #allow the user to ask questions about 
         print("\nAssistant:", assistant_reply, "\n") #send these to the server
 
 
-bitsize_learn('bitsize')
+for i in range(10):
+    r = bitsize_learn('bitsize')
+    create_flashcards_from_ai_output(r)

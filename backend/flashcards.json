@@ -1,0 +1,122 @@
+[
+    {
+        "Topic": "*",
+        "Concept": "Home Run",
+        "Definition": "A home run is a hit that allows the batter to round all the bases and score a run, typically achieved by hitting the ball out of the playing field",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "*",
+        "Concept": "Strikeout",
+        "Definition": "A strikeout occurs when a batter receives three strikes during their at-bat, resulting in an out",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "*",
+        "Concept": "Batting Average",
+        "Definition": "Batting average is a statistic that measures a player's hitting performance, calculated by dividing the number of hits by the number of at-bats",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "*",
+        "Concept": "Walk",
+        "Definition": "A walk occurs when a batter receives four balls during their at-bat, allowing them to advance to first base without hitting the ball",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "*",
+        "Concept": "On-Base Percentage",
+        "Definition": "On-base percentage is a statistic that measures how frequently a batter reaches base, calculated by adding hits, walks, and hit by pitches, then dividing by the total number of plate appearances",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "*",
+        "Concept": "Fielding Percentage",
+        "Definition": "Fielding percentage is a statistic that measures a player's defensive performance, calculated by dividing the number of successful plays (putouts and assists) by the total number of chances",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "*",
+        "Concept": "RBI",
+        "Definition": "An RBI, or run batted in, is credited to a batter when their hit leads to a run being scored by a player on base",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "*",
+        "Concept": "Double Play",
+        "Definition": "A double play is a defensive play in which two outs are recorded in one continuous action",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "*",
+        "Concept": "ERA",
+        "Definition": "Earned Run Average (ERA) is a statistic that measures a pitcher's effectiveness, calculated by averaging the number of earned runs allowed per nine innings pitched",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "*",
+        "Concept": "Slugging Percentage",
+        "Definition": "Slugging percentage is a statistic that measures a player's power-hitting ability, calculated by dividing total bases by at-bats",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Infield",
+        "Definition": "The infield is the area of the baseball diamond that includes the four bases and the pitcher's mound, where most defensive plays occur",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Scoring Runs",
+        "Definition": "Scoring runs is the primary objective in baseball, achieved by players hitting the ball and successfully running around the bases",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Innings",
+        "Definition": "An inning is a division of a baseball game where each team has a turn to bat and a turn to field",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Outfield",
+        "Definition": "The outfield is the area of the baseball field beyond the infield, primarily responsible for catching fly balls and preventing runs from scoring",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Pitcher",
+        "Definition": "The pitcher is the player who throws the baseball towards the catcher to initiate each play, aiming to get batters out",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Official Baseball Rules",
+        "Definition": "The Official Baseball Rules are the comprehensive guidelines that govern the play, conduct, and procedures of baseball games",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Bases",
+        "Definition": "Bases are the four markers on a baseball field that players must touch in sequence to score a run",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Strategy",
+        "Definition": "Strategy in baseball involves the planning and decision-making processes to maximize a team's chances of winning during a game",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Diamond-shaped Field",
+        "Definition": "The diamond-shaped field is the layout of a baseball field consisting of four bases arranged in a square format",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Understanding the Basics of Baseball",
+        "Concept": "Home Run",
+        "Definition": "A home run is a hit that allows the batter to round all the bases and score a run, typically achieved by hitting the ball out of the playing field",
+        "Learn Status": 0
+    }
+]
