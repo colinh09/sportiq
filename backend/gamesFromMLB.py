@@ -168,7 +168,7 @@ def get_all_players(mlb_data_dict, team): #return a dictionary of list, similar 
 CANT PROMISE THAT THESE TWO FUNCTIONS WORK AS INTENDED, WE DONT KNOW WHAT THE PAGE LOOKS LIKE WHEN THE SEASON STARTS. This is a draft version of these two functions and can be edited later.
 '''
 def extract_year(url): #say we are in december, the next game is in febuary. Thus cannot take the current year.
-    year_match = re.search(r'-(\d{4})--', url)
+    year_match = re.search(r'(\d{4})', url)
     return year_match.group(1) if year_match else None
 def next_game_team(dict, team): #returns the date and oppenent of the next scheduled game. takes in team full name. #IGNORING TIMEZONES FOR NOW (time zones don't matter, compare it to local time in EST all the time, cuz thats where the API request is coming from)
     
@@ -190,8 +190,9 @@ def next_game_team(dict, team): #returns the date and oppenent of the next sched
         if time.find('-') != -1:
             i += 1
             continue
-        url = soup.find('a', class_='AnchorLink Schedule__ticket')['href']
-        year = extract_year(url)
+        
+        year = extract_year(repr(soup.find('title')))
+        
         date = row.find('td', class_='Table__TD').text.strip()
         
         est = pytz.timezone('America/New_York')
@@ -231,8 +232,8 @@ def game_history_five(dict, team, scheduleUrl): #current win-lost record and out
         if time.find('-') != -1:
             i += 1
             continue
-        url = soup.find('a', class_='AnchorLink Schedule__ticket')['href']
-        year = extract_year(url)
+        year = extract_year(repr(soup.find('title')))
+        
         est = pytz.timezone('America/New_York')
         time_now = datetime.now(est).timestamp()
         date_time_str = f"{date} {time} {year}"
@@ -289,5 +290,4 @@ def get_all_players_list(MLBdata):
 data = get_mlb_scores() #this is all mlb data
 dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
 
-returnVal = get_all_players(dict, "Chicago Cubs")
-#print(returnVal)
+returnVal = next_game_team(dict, "Chicago Cubs")
