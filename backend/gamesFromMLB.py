@@ -170,7 +170,7 @@ CANT PROMISE THAT THESE TWO FUNCTIONS WORK AS INTENDED, WE DONT KNOW WHAT THE PA
 def extract_year(url): #say we are in december, the next game is in febuary. Thus cannot take the current year.
     year_match = re.search(r'(\d{4})', url)
     return year_match.group(1) if year_match else None
-def next_game_team(dict, team): #returns the date and oppenent of the next scheduled game. takes in team full name. #IGNORING TIMEZONES FOR NOW (time zones don't matter, compare it to local time in EST all the time, cuz thats where the API request is coming from)
+def next_game_team(dict, team): #returns the date and opponent of the next scheduled game. takes in team full name. #IGNORING TIMEZONES FOR NOW (time zones don't matter, compare it to local time in EST all the time, cuz thats where the API request is coming from)
     
     scheduleUrl = dict[team]['teamSchedule']
 
@@ -208,7 +208,7 @@ def next_game_team(dict, team): #returns the date and oppenent of the next sched
         opponent_str = f"{opponent}"
     
     if date_time_str and opponent_str:
-        return {'date': date_time_str, 'oppenent': opponent_str}
+        return {'date': date_time_str, 'opponent': opponent_str}
     else:
         return "There are no more games this season"
 
@@ -260,9 +260,12 @@ def game_history_five(dict, team, scheduleUrl): #current win-lost record and out
                 k += 1
                 newrow = soup.find('tr', attrs={'data-idx': f'{i - k}'})
                 continue
-            oppenent = f"{partition.find_all('span')[-1].text.strip()}"
+            print()
+            opponent_url = partition.find_all('span')[-1].find('a', class_='AnchorLink')['href']
+            
+            opponent = opponent_url[opponent_url.rfind('/') + 1:].replace('-', ' ').title()
             date = f"{tableinfo[0].text.strip()}"
-            game_history.append({'oppenent': oppenent, 'game result': result, 'date': date})
+            game_history.append({'opponent': opponent, 'game result': result, 'date': date})
             if k == 5: 
                 break
             k += 1
@@ -300,3 +303,5 @@ def get_all_players_list(MLBdata):
 
 data = get_mlb_scores() #this is all mlb data
 mlb_dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
+team = 'Kansas City Royals'
+print(game_history_five(mlb_dict, team, mlb_dict[team]['lastYearSchedule']))
