@@ -185,7 +185,7 @@ def make_flashcards_from_selection(selection):
             json.dump([], file)
 
     for term in selection:
-        system_prompt = f"You are an MLB assistant, that is all knowing about MLB. Make in-depth flashcards based on this {term}. The format of each selection is 'Noun('player', 'team' or 'rule')', denoting the thing outside the parenthesis as the specific thing we want to look into. You should go into detail about team history, player history, or a thorough understanding of rules, depending on each selection. Multiple selections are allowed. Name the topic of what each flashcard is about."
+        system_prompt = f"You are an MLB assistant, that is all knowing about MLB. Make in-depth flashcards based on this {term}. The format of each selection is 'Noun('player', 'team' or 'rule')', denoting the thing outside the parenthesis as the specific thing we want to look into. You should go into detail about team history, player history, or a thorough understanding of rules, depending on each selection. Multiple selections are allowed. Name the topic of what each flashcard is about. The flashcards should be in 'Concept' and 'Definition' form. Remove extraneous text, start each flashcard with 'Flashcard'."
 
         conversation = [
             {"role": "system", "content": system_prompt},
@@ -201,8 +201,9 @@ def make_flashcards_from_selection(selection):
         
         reply = response.choices[0].message.content
         reply = reply.replace('*', "")
-        flashcards = reply.split("Flashcard")
         
+        flashcards = reply.split("Flashcard")
+        print(flashcards)
         for flashcard in flashcards:
             startIdx = flashcard.find('Concept')
             if startIdx != -1:
@@ -289,6 +290,5 @@ def typical_chat_loop(team_name = None): #allow the user to ask questions about 
         conversation.append({"role": "assistant", "content": assistant_reply})
         
         print("\nAssistant:", assistant_reply, "\n") #send these to the server
-
 
 print(make_flashcards_from_selection(['Chicago Cubs(team)', 'Justin Verlander(player)']))
