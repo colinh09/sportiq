@@ -1,248 +1,236 @@
 [
     {
-        "Topic": "*",
-        "Concept": "Home Run",
-        "Definition": "A home run is a hit that allows the batter to round all the bases and score a run, typically achieved by hitting the ball out of the playing field",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "*",
-        "Concept": "Strikeout",
-        "Definition": "A strikeout occurs when a batter receives three strikes during their at-bat, resulting in an out",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "*",
-        "Concept": "Batting Average",
-        "Definition": "Batting average is a statistic that measures a player's hitting performance, calculated by dividing the number of hits by the number of at-bats",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "*",
-        "Concept": "Walk",
-        "Definition": "A walk occurs when a batter receives four balls during their at-bat, allowing them to advance to first base without hitting the ball",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "*",
-        "Concept": "On-Base Percentage",
-        "Definition": "On-base percentage is a statistic that measures how frequently a batter reaches base, calculated by adding hits, walks, and hit by pitches, then dividing by the total number of plate appearances",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "*",
-        "Concept": "Fielding Percentage",
-        "Definition": "Fielding percentage is a statistic that measures a player's defensive performance, calculated by dividing the number of successful plays (putouts and assists) by the total number of chances",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "*",
-        "Concept": "RBI",
-        "Definition": "An RBI, or run batted in, is credited to a batter when their hit leads to a run being scored by a player on base",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "*",
-        "Concept": "Double Play",
-        "Definition": "A double play is a defensive play in which two outs are recorded in one continuous action",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "*",
-        "Concept": "ERA",
-        "Definition": "Earned Run Average (ERA) is a statistic that measures a pitcher's effectiveness, calculated by averaging the number of earned runs allowed per nine innings pitched",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "*",
-        "Concept": "Slugging Percentage",
-        "Definition": "Slugging percentage is a statistic that measures a player's power-hitting ability, calculated by dividing total bases by at-bats",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Infield",
-        "Definition": "The infield is the area of the baseball diamond that includes the four bases and the pitcher's mound, where most defensive plays occur",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Scoring Runs",
-        "Definition": "Scoring runs is the primary objective in baseball, achieved by players hitting the ball and successfully running around the bases",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Innings",
-        "Definition": "An inning is a division of a baseball game where each team has a turn to bat and a turn to field",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Outfield",
-        "Definition": "The outfield is the area of the baseball field beyond the infield, primarily responsible for catching fly balls and preventing runs from scoring",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Pitcher",
-        "Definition": "The pitcher is the player who throws the baseball towards the catcher to initiate each play, aiming to get batters out",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Official Baseball Rules",
-        "Definition": "The Official Baseball Rules are the comprehensive guidelines that govern the play, conduct, and procedures of baseball games",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Bases",
-        "Definition": "Bases are the four markers on a baseball field that players must touch in sequence to score a run",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Strategy",
-        "Definition": "Strategy in baseball involves the planning and decision-making processes to maximize a team's chances of winning during a game",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Diamond-shaped Field",
-        "Definition": "The diamond-shaped field is the layout of a baseball field consisting of four bases arranged in a square format",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Understanding the Basics of Baseball",
-        "Concept": "Home Run",
-        "Definition": "A home run is a hit that allows the batter to round all the bases and score a run, typically achieved by hitting the ball out of the playing field",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs(team), Justin Verlander(player)",
-        "Concept": "Team Origins",
-        "Definition": "The Chicago Cubs are one of the oldest professional baseball teams, founded in 1870 as the Chicago White Stockings",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs(team), Justin Verlander(player)",
-        "Concept": "Championships",
-        "Definition": "The Chicago Cubs have won a total of three World Series championships, with titles in 1907, 1908, and most famously, their 2016 victory, which ended a 108-year championship drought",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs(team)",
+        "Topic": "Chicago Cubs",
         "Concept": "Team History",
-        "Definition": "The Chicago Cubs are one of Major League Baseball's most storied franchises, established in 1870 as the Chicago White Stockings",
+        "Definition": "The Chicago Cubs, established in 1870, are one of the oldest and most storied franchises in Major League Baseball (MLB)",
         "Learn Status": 0
     },
     {
-        "Topic": "Chicago Cubs(team)",
+        "Topic": "Chicago Cubs",
+        "Concept": "Player History",
+        "Definition": "One of the most notable players in Chicago Cubs history is Ernie Banks, often referred to as \"Mr",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Rule",
+        "Definition": "The \"Infield Fly Rule\" is a crucial rule in baseball designed to prevent fielders from intentionally dropping a catchable fly ball to create a double play",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
         "Concept": "Team History",
-        "Definition": "The Chicago Cubs are one of Major League Baseball's most storied franchises, established in 1870 as the Chicago White Stockings",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Justin Verlander(player)",
-        "Concept": "Early Career",
-        "Definition": "Justin Verlander was drafted by the Detroit Tigers as the second overall pick in the 2004 MLB Draft",
+        "Definition": "The Chicago Cubs have experienced various phases throughout their history, including periods of success and drought",
         "Learn Status": 0
     },
     {
         "Topic": "Chicago Cubs",
-        "Concept": "Team Colors",
-        "Definition": "The Chicago Cubs' team colors are blue, red, and white",
+        "Concept": "Player History",
+        "Definition": "Sammy Sosa is another iconic figure in Cubs history, known for his explosive batting power and charismatic personality",
         "Learn Status": 0
     },
     {
         "Topic": "Chicago Cubs",
-        "Concept": "Famous Players",
-        "Definition": "The Chicago Cubs have been home to numerous Hall of Fame players throughout their history, including Ernie Banks, known as \"Mr",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs",
-        "Concept": "Wrigley Field",
-        "Definition": "Wrigley Field, located in Chicago, Illinois, has been the home of the Cubs since 1916",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs",
-        "Concept": "Rivalries",
-        "Definition": "The Chicago Cubs have a fierce rivalry with the Chicago White Sox, known as the \"Chicago Crosstown Classic",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs",
-        "Concept": "2016 World Series",
-        "Definition": "The 2016 World Series is a historic event for the Chicago Cubs, marking their first championship in 108 years",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs",
-        "Concept": "Notable Managers",
-        "Definition": "The Cubs have had several notable managers throughout their history, including Joe Maddon, who led the team to their 2016 World Series title",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs",
-        "Concept": "Team Mascot",
-        "Definition": "The Chicago Cubs' mascot is named \"Clark the Cub",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs",
-        "Concept": "Hall of Fame Inductees",
-        "Definition": "The Chicago Cubs have had several players inducted into the Baseball Hall of Fame, including legends such as Ernie Banks, Billy Williams, Ryne Sandberg, and Fergie Jenkins",
-        "Learn Status": 0
-    },
-    {
-        "Topic": "Chicago Cubs",
-        "Concept": "Cubs' Farm System",
-        "Definition": "The Chicago Cubs have invested in a robust farm system, focusing on developing young talent through their minor league affiliates",
+        "Concept": "Rule",
+        "Definition": "The \"Designated Hitter Rule\" (DH) allows teams to have a player designated to bat in place of the pitcher without having to take the pitcher out of the game",
         "Learn Status": 0
     },
     {
         "Topic": "Justin Verlander",
-        "Concept": "Career Highlights",
-        "Definition": "Justin Verlander has had an illustrious career as a pitcher, highlighted by multiple All-Star selections, a Rookie of the Year award in 2006, and two Cy Young Awards (2011 and 2019)",
+        "Concept": "Player History",
+        "Definition": "Justin Verlander is a professional baseball pitcher who has played in Major League Baseball (MLB) primarily for the Detroit Tigers and the Houston Astros",
         "Learn Status": 0
     },
     {
         "Topic": "Justin Verlander",
-        "Concept": "Postseason Performance",
-        "Definition": "Justin Verlander has had significant success in postseason play, particularly with the Detroit Tigers and Houston Astros",
+        "Concept": "Team History (Detroit Tigers)",
+        "Definition": "The Detroit Tigers are a professional baseball team based in Detroit, Michigan, and are part of the American League (AL) Central Division",
         "Learn Status": 0
     },
     {
         "Topic": "Justin Verlander",
-        "Concept": "Pitching Style",
-        "Definition": "Verlander's pitching style is characterized by a combination of a high-velocity fastball, a devastating slider, and a changeup",
+        "Concept": "Player Achievements",
+        "Definition": "Throughout his career, Justin Verlander has garnered numerous awards and achievements that highlight his impact on the game of baseball",
         "Learn Status": 0
     },
     {
         "Topic": "Justin Verlander",
-        "Concept": "Injury Comeback",
-        "Definition": "After undergoing Tommy John surgery in 2020, Verlander faced a significant challenge in returning to the mound",
+        "Concept": "Rule (Pitching Regulations)",
+        "Definition": "MLB has specific rules governing pitcher usage, which impact players like Justin Verlander",
         "Learn Status": 0
     },
     {
         "Topic": "Justin Verlander",
-        "Concept": "Legacy and Impact",
-        "Definition": "Verlander's legacy in baseball is marked by his impressive statistics, including over 3,000 strikeouts and a career ERA under 3",
+        "Concept": "Player Transition (Houston Astros)",
+        "Definition": "In 2017, Justin Verlander was traded from the Detroit Tigers to the Houston Astros, where he continued to excel as a pitcher",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Team History (Cubs Championships)",
+        "Definition": "The Chicago Cubs won their first World Series championship in 1907 and followed it with another in 1908, marking the beginning of a long championship drought that lasted 108 years until they finally won the title again in 2016, breaking the \"Curse of the Billy Goat",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Player History (Ron Santo)",
+        "Definition": "Ron Santo was a key player for the Chicago Cubs from 1960 to 1973, known for his exceptional hitting and defensive skills at third base",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Rule (Balk Rule)",
+        "Definition": "A balk is an illegal motion by a pitcher that can result in base runners advancing one base",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Team History (Wrigley Field)",
+        "Definition": "Wrigley Field, home of the Chicago Cubs since 1916, is one of the most iconic ballparks in Major League Baseball",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Player History (Kerry Wood)",
+        "Definition": "Kerry Wood was a standout pitcher for the Chicago Cubs, primarily remembered for his 20-strikeout game in 1998, a remarkable feat that showcased his immense talent",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Rule (Ground Rule Double)",
+        "Definition": "A ground rule double occurs when a fair ball bounces out of play, usually over the outfield fence or into the stands, allowing the batter to advance to second base",
         "Learn Status": 0
     },
     {
         "Topic": "Justin Verlander",
-        "Concept": "Awards and Achievements",
-        "Definition": "Throughout his career, Verlander has amassed a plethora of awards, including 2\u00d7 Cy Young Awards, 1\u00d7 MVP award, multiple All-Star selections, and a World Series title",
+        "Concept": "Player Statistics",
+        "Definition": "Justin Verlander has achieved remarkable statistics throughout his career, including over 3,000 strikeouts and a career ERA of around 3",
         "Learn Status": 0
     },
     {
         "Topic": "Justin Verlander",
-        "Concept": "Notable Games",
-        "Definition": "Some of Verlander's most notable games include his no-hitter against the Toronto Blue Jays in 2011 and his World Series starts where he displayed his elite pitching skills",
+        "Concept": "Player Milestones",
+        "Definition": "Verlander reached significant milestones such as pitching a no-hitter in 2007 and becoming the American League Most Valuable Player (MVP) in 2011, a rare achievement for a pitcher",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player Awards",
+        "Definition": "Justin Verlander has won multiple Cy Young Awards, including in 2011 and 2019, recognizing him as the best pitcher in his league during those seasons",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Team History (Houston Astros)",
+        "Definition": "The Houston Astros, founded in 1962, became a prominent MLB team in the 2010s, winning the World Series in 2017 and 2022, significantly aided by Verlander's contributions",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player Impact",
+        "Definition": "Verlander's presence on a team significantly boosts its chances of success; his leadership and experience are invaluable, particularly in playoff situations",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Rule (Pitching Limits)",
+        "Definition": "MLB imposes pitch limits and rules regarding the use of pitchers to preserve their health, which are particularly relevant for high-usage pitchers like Verlander, especially as he ages",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player Rehabilitation",
+        "Definition": "Verlander underwent Tommy John surgery in 2020, a common procedure for pitchers, which involved a lengthy recovery but ultimately allowed him to return to form in subsequent seasons",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player Comparisons",
+        "Definition": "Verlander is often compared to other great pitchers such as Clayton Kershaw and Max Scherzer, as all have had significant impacts on their teams and the league during their careers",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player Career Longevity",
+        "Definition": "Justin Verlander's ability to maintain performance into his late 30s is a testament to his training regimen, adaptability, and understanding of pitching mechanics",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Team History (Cubs Rivalries)",
+        "Definition": "The Chicago Cubs have intense rivalries, most notably with the St",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Player History (Fergie Jenkins)",
+        "Definition": "Fergie Jenkins is a Hall of Fame pitcher who played for the Chicago Cubs primarily in the 1960s and early 1970s",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Rule (Time of Game)",
+        "Definition": "MLB has rules regarding the time of game, including regulations to promote pace of play",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Team History (Cubs Ownership)",
+        "Definition": "The Chicago Cubs were owned by the Wrigley family for several decades until the team was sold to the Ricketts family in 2009",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Player History (Billy Williams)",
+        "Definition": "Billy Williams is a former outfielder for the Chicago Cubs, playing from 1959 to 1975",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Chicago Cubs",
+        "Concept": "Rule (Walks and Hit by Pitch)",
+        "Definition": "A walk is awarded to a batter after four balls are thrown outside the strike zone, allowing them to advance to first base",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player History (Verlander Draft)",
+        "Definition": "Justin Verlander was selected by the Detroit Tigers as the second overall pick in the 2004 MLB Draft, marking the beginning of his professional career and setting the stage for his future successes in MLB",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player Achievements (MVP Season)",
+        "Definition": "In 2011, Justin Verlander not only won the Cy Young Award but also became the first pitcher since 1992 to win the American League MVP award, a testament to his dominance that season with a 24-5 record and a 2",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player Milestones (Strikeouts)",
+        "Definition": "Justin Verlander joined the elite club of pitchers with over 3,000 career strikeouts, achieving this milestone in 2019, showcasing his longevity and consistent performance in MLB",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Team History (Astros World Series Contributions)",
+        "Definition": "Verlander played a crucial role in the Houston Astros' 2017 World Series victory, contributing significantly to the pitching staff and solidifying his status as one of the premier pitchers in the league",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player Rehabilitation (Tommy John Surgery Impact)",
+        "Definition": "After undergoing Tommy John surgery in 2020, Verlander faced a challenging rehabilitation process, but his successful return to the mound demonstrated his resilience and dedication to the game",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Player Comparisons (Legacy)",
+        "Definition": "Justin Verlander's career has led to frequent comparisons to other legendary pitchers, particularly regarding his strikeout ability, postseason performances, and overall impact on the game, placing him among the all-time greats",
+        "Learn Status": 0
+    },
+    {
+        "Topic": "Justin Verlander",
+        "Concept": "Rule (Pitcher Usage Regulations)",
+        "Definition": "MLB's regulations on pitcher usage, including rules about rest days and pitch counts, are crucial for managing a pitcher's workload and health, particularly for high-profile pitchers like Verlander who have faced injuries",
         "Learn Status": 0
     }
 ]

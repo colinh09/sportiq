@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import re
 import json
+import learningstreak
 load_dotenv()
 
 ###   COMMENT FROM HAMZA
@@ -108,6 +109,7 @@ def bitsize_learn(bitsize): #make this the server, for now is a txt. name of the
     f1.write('\n' * 5)
     f1.close()
 
+    learningstreak.update_learning_streak()
     #next, make flashcards out of covered subjects.
     return module_name, reply
 
@@ -167,6 +169,7 @@ def create_flashcards_from_ai_output(bitsize_learn_response):
     with open(json_file_path, 'w') as file:
         json.dump(existing_flashcards, file, indent=4)
         file.close()
+    learningstreak.update_learning_streak()
     return parsed_flashcards
 
 
@@ -227,7 +230,7 @@ def make_flashcards_from_selection(selection):
     existing_flashcards.extend(parsed_flashcards)
     with open(json_file_path, 'w') as file:
         json.dump(existing_flashcards, file, indent=4)
-    
+    learningstreak.update_learning_streak()
     return parsed_flashcards
 
 
@@ -252,6 +255,7 @@ def typical_chat_loop(team_name = None): #allow the user to ask questions about 
 
 
     #check for saved convo
+    learningstreak.update_learning_streak()
     if os.path.exists(filename):
         with open(filename, "r") as file:
             conversation = json.load(file)
@@ -262,7 +266,7 @@ def typical_chat_loop(team_name = None): #allow the user to ask questions about 
         user_input = input("You: ")
         
         # commands for quitting out for the user (write these as instuctions or button clicks)
-        if user_input.lower() in 'exit': # <-- (From Hamza) shouldn't you swap what's before and after the in?
+        if user_input.lower() in 'exit': # <-- (From Hamza) shouldn't you swap what's before and after the in? (William - No, because if I write a string that has the word exit, it would quit the program.)
             #save before quitting
             with open(filename, "w") as file:
                 json.dump(conversation, file)
@@ -274,6 +278,7 @@ def typical_chat_loop(team_name = None): #allow the user to ask questions about 
                 os.remove(filename)
                 print(f"Conversation history deleted for {'team ' + team_name if team_name else 'general MLB topics'}.")
                 conversation = [{"role": "system", "content": system_message}]
+                
             continue
 
         # rest of normal conversation
@@ -291,4 +296,3 @@ def typical_chat_loop(team_name = None): #allow the user to ask questions about 
         
         print("\nAssistant:", assistant_reply, "\n") #send these to the server
 
-print(make_flashcards_from_selection(['Chicago Cubs(team)', 'Justin Verlander(player)']))
