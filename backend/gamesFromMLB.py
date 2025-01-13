@@ -204,6 +204,7 @@ def next_game_team(dict, team): #returns the date and opponent of the next sched
         i += 1
     
     if row:
+        partition = row.find('div', class_='flex items-center opponent-logo')
         opponent_url = partition.find_all('span')[-1].find('a', class_='AnchorLink')['href']
             
         opponent = opponent_url[opponent_url.rfind('/') + 1:].replace('-', ' ').title()
