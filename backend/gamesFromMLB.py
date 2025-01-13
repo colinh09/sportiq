@@ -204,7 +204,9 @@ def next_game_team(dict, team): #returns the date and opponent of the next sched
         i += 1
     
     if row:
-        opponent = row.find('div', class_='flex items-center opponent-logo').find_all('span')[-1].text.strip()
+        opponent_url = partition.find_all('span')[-1].find('a', class_='AnchorLink')['href']
+            
+        opponent = opponent_url[opponent_url.rfind('/') + 1:].replace('-', ' ').title()
         opponent_str = f"{opponent}"
     
     if date_time_str and opponent_str:
@@ -303,10 +305,8 @@ def get_all_players_list(MLBdata):
 
 data = get_mlb_scores() #this is all mlb data
 mlb_dict = get_mlb_team_data(data) #gives us a dictionary request of all mlb data
-<<<<<<< HEAD
 team = 'Kansas City Royals'
 print(game_history_five(mlb_dict, team, mlb_dict[team]['lastYearSchedule']))
-=======
 
 teamNames = map(lambda team: team['displayName'], return_team_list())
 for team in teamNames:
@@ -318,4 +318,3 @@ for team in teamNames:
     
 
 #get_all_players(mlb_dict, "Chicago Cubs")
->>>>>>> 1afafdd2b45685fb1fecbd5e29392a6e3da70f5a
