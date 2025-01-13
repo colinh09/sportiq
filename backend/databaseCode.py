@@ -5,25 +5,25 @@ from datetime import datetime
 mlb_data_dict = get_mlb_team_data(get_mlb_scores())
 
 city_to_name = {
-    "Phoenix": "Arizona Diamondbacks",
+    "Arizona": "Arizona Diamondbacks",
     "Atlanta": "Atlanta Braves",
     "Baltimore": "Baltimore Orioles",
     "Boston": "Boston Red Sox",
-    "Chicago": "Chicago White Sox",
-    "Chicago (Cubs)": "Chicago Cubs",
+    "Chicago": "Chicago White Sox", # <-- Need to differentiate
+    "Chicago 2": "Chicago Cubs", # <-- Need to differentiate
     "Cincinnati": "Cincinnati Reds",
     "Cleveland": "Cleveland Guardians",
     "Colorado": "Colorado Rockies",
     "Detroit": "Detroit Tigers",
     "Houston": "Houston Astros",
     "Kansas City": "Kansas City Royals",
-    "Anaheim": "Los Angeles Angels",
-    "Los Angeles": "Los Angeles Dodgers",
+    "Los Angeles": "Los Angeles Angels", # <-- Need to differentiate
+    "Los Angeles 2": "Los Angeles Dodgers", # <-- Need to differentiate
     "Miami": "Miami Marlins",
     "Milwaukee": "Milwaukee Brewers",
-    "Minneapolis": "Minnesota Twins",
-    "New York (Yankees)": "New York Yankees",
-    "New York (Mets)": "New York Mets",
+    "Minnesota": "Minnesota Twins",
+    "New York": "New York Yankees", # <-- Need to differentiate
+    "New York 2": "New York Mets", # <-- Need to differentiate
     "Oakland": "Oakland Athletics",
     "Philadelphia": "Philadelphia Phillies",
     "Pittsburgh": "Pittsburgh Pirates",
@@ -32,7 +32,7 @@ city_to_name = {
     "Seattle": "Seattle Mariners",
     "St. Louis": "St. Louis Cardinals",
     "Tampa Bay": "Tampa Bay Rays",
-    "Arlington": "Texas Rangers",
+    "Texas": "Texas Rangers",
     "Toronto": "Toronto Blue Jays",
     "Washington": "Washington Nationals"
 }
