@@ -1,5 +1,5 @@
 import duckdb
-from gamesFromMLB import return_team_list, get_mlb_scores, get_mlb_team_data, get_all_players_list, game_history_five
+from gamesFromMLB import return_team_list, get_mlb_scores, get_mlb_team_data, get_all_players_list, game_history_five, next_game_team
 from datetime import datetime
 
 mlb_data_dict = get_mlb_team_data(get_mlb_scores())
@@ -13,7 +13,7 @@ city_to_name = {
     "Chicago (Cubs)": "Chicago Cubs",
     "Cincinnati": "Cincinnati Reds",
     "Cleveland": "Cleveland Guardians",
-    "Denver": "Colorado Rockies",
+    "Colorado": "Colorado Rockies",
     "Detroit": "Detroit Tigers",
     "Houston": "Houston Astros",
     "Kansas City": "Kansas City Royals",
@@ -58,6 +58,7 @@ def _initialize_teams_table(con):
 
     con.executemany(query, values)
 
+
 def _initialize_players_table(con):
     allPlayers = get_all_players_list(mlb_data_dict)
     con.sql("CREATE TABLE IF NOT EXISTS Players (name VARCHAR, position VARCHAR, \
@@ -77,13 +78,13 @@ def _initialize_players_table(con):
     
     con.executemany(query, allPlayers)
 
+
 # Initializes the records table, and the games tables with the five most recent games
 def _initialize_games_tables(con):
-        
     # Games table (only five most recent games of every team)
     con.sql("CREATE TABLE IF NOT EXISTS Games (gameId INTEGER PRIMARY KEY, team VARCHAR, \
             opponent VARCHAR, date VARCHAR, won BOOLEAN, teamScore INTEGER, opponentScore INTEGER)")
-    con.sql("DELETE FROM Players")
+    con.sql("DELETE FROM Games")
 
 
     # Record table (stores the running wins and losses of each team)
@@ -94,6 +95,9 @@ def _initialize_games_tables(con):
     gamesList = []
     recordsList = []
     gameId = 0
+
+    allTeamNames = map(lambda team: team['displayName'], return_team_list())
+
     for team in allTeamNames:
         games_dict = game_history_five(mlb_data_dict, team, mlb_data_dict[team]['lastYearSchedule'])
 
@@ -124,12 +128,42 @@ def _initialize_games_tables(con):
             else:
                 gamesList.append(game)
                 gameId += 1
+
+
+def _initialize_upcoming_games_table(con):
+    allTeamNames = map(lambda team: team['displayName'], return_team_list())
+    con.sql("CREATE TABLE IF NOT EXISTS UpcomingGames (team VARCHAR, opponent VARCHAR, \
+             date VARCHAR)")
+    num_entries = con.sql("SELECT COUNT(*) FROM UpcomingGames").fetchall()[0][0]
+    if num_entries == len(allTeamNames):
+        print("Skipped creating upcoming games table")
+        return
+    else:
+        con.sql("DELETE FROM UpcomingGames")
+
+    upcomingGames = []
+    columns = ['team', 'opponent', 'date']
+    for team in allTeamNames:
+        nextGame = next_game_team(mlb_data_dict, team)
+        parsed_date = datetime.strptime(nextGame['date'], '%a, %b %d %I:%M %p %Y')
+        nextGame['date'] = parsed_date.strftime(f'%Y-%m-%d')
+        nextGame['team'] = team
+        gameTuple = tuple(nextGame[col] for col in columns)
+        upcomingGames.append(gameTuple)
     
+    columnNames = ", ".join(columns)
+    placeholders = ", ".join(["?"] * len(columns))
+
+    query = f"INSERT INTO UpcomingGames ({columnNames}) VALUES ({placeholders})"
+    
+    con.executemany(query, upcomingGames)
+
 
 def _initialize_db():
     with duckdb.connect("database.db") as con:
         _initialize_teams_table(con)
         _initialize_players_table(con)
         _initialize_games_tables(con)
+        _initialize_upcoming_games_table(con)
 
 _initialize_db()
