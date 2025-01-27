@@ -1,6 +1,7 @@
 import duckdb
 from gamesFromMLB import return_team_list, get_mlb_scores, get_mlb_team_data, get_all_players_list, game_history_five, next_game_team
 from datetime import datetime
+import numpy as np
 
 mlb_data_dict = get_mlb_team_data(get_mlb_scores())
 
@@ -144,6 +145,7 @@ def _initialize_db():
         #_initialize_games_tables(con)
         _initialize_upcoming_games_table(con)
 
+
 def test_db(tables):
     with duckdb.connect("database.db") as con:
         for table in tables:
@@ -152,6 +154,65 @@ def test_db(tables):
             print(f"{num_rows} rows")
             random_sample = con.sql(f"SELECT * FROM {table} USING SAMPLE 10").fetchall()
             print(f"Random sample of rows:\n{random_sample}\n\n")
+
+def fetch_team(teamName):
+    with duckdb.connect("database.db") as con:
+        query = f"SELECT * FROM Teams WHERE displayName = '{teamName}'"
+        df = con.execute(query).fetchdf()
+        result = df.to_dict(orient="records")
+
+    return result       
+
+def fetch_player(playerName):
+    with duckdb.connect("database.db") as con:
+        query = f"SELECT * FROM Players WHERE name = '{playerName}'"
+        df = con.execute(query).fetchdf()
+        result = df.to_dict(orient="records")
+    
+    for player in result:
+        if isinstance(player['listings'], np.ndarray):
+            player['listings'] = player['listings'].tolist()
+
+    return result
+
+def fetch_players(teamName):
+    with duckdb.connect("database.db") as con:
+        query = f"SELECT * FROM Players WHERE team = '{teamName}'"
+        df = con.execute(query).fetchdf()
+        result = df.to_dict(orient="records")
+
+    for player in result:
+        if isinstance(player['listings'], np.ndarray):
+            player['listings'] = player['listings'].tolist()
+
+    return result
+
+def fetch_games(teamName, hasHappened):
+    with duckdb.connect("database.db") as con:
+        query = ""
+        if hasHappened:
+            query = f"SELECT * FROM Games WHERE team = '{teamName}'"
+        else:
+            query = f"SELECT * FROM UpcomingGames WHERE team = '{teamName}'"
+        df = con.execute(query).fetchdf()
+        result = df.to_dict(orient="records")
+
+    return result
+
+def fetch_record(teamName):
+    with duckdb.connect("database.db") as con:
+        query = f"SELECT * FROM Records WHERE team = '{teamName}'"
+        df = con.execute(query).fetchdf()
+        result = df.to_dict(orient="records")
+    
+    return result
+
+def fetch_team_list():
+    with duckdb.connect("database.db") as con:
+        df = con.execute("SELECT * from Teams").fetchdf()
+        result = df.to_dict(orient="records")
+
+    return result
 
 #_initialize_db()
 #test_db(['Players', 'Teams', 'Games', 'Records', 'UpcomingGames'])

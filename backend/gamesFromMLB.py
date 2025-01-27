@@ -83,7 +83,6 @@ def get_team_leaders_dict(mlb_data_dict, team):
     secondIdx = teamleaderInfo.find("dictionary")
     teamleaderInfoNew = teamleaderInfo[:secondIdx - 2]
     teamleaderInfoNew = remove_backslashes(teamleaderInfoNew.strip())
-    print(f"teamLeaderInfoNew: {teamleaderInfoNew}")
     teamleaderInfoParse = json.loads(teamleaderInfoNew)
     leadersParse = teamleaderInfoParse['leaders']
     

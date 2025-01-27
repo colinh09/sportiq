@@ -173,9 +173,8 @@ def create_flashcards_from_ai_output(bitsize_learn_response):
     return parsed_flashcards
 
 
-def make_flashcards_from_selection(selection):
+def make_flashcards_from_selection(selection, json_file_path):
     parsed_flashcards = []
-    json_file_path = 'flashcards.json'
 
     # Initialize empty list for existing flashcards
     try:
@@ -234,13 +233,6 @@ def make_flashcards_from_selection(selection):
     return parsed_flashcards
 
 
-
-
-
-    
-    
-
-
 def typical_chat_loop(team_name = None): #allow the user to ask questions about general MLB or a specific team, save these conversations, and give them the option for deletion
     
     if team_name:
@@ -296,3 +288,20 @@ def typical_chat_loop(team_name = None): #allow the user to ask questions about 
         
         print("\nAssistant:", assistant_reply, "\n") #send these to the server
 
+def read_streak_file(file_path):
+    streak_data = []
+    
+    try:
+        with open(file_path, 'r') as file:
+            # Read the lines in pairs
+            lines = file.readlines()
+            for i in range(0, len(lines), 2):
+                streak = int(lines[i].strip())  # Convert streak to integer
+                date = lines[i + 1].strip()  # Strip the newline from date
+                streak_data.append([streak, date])
+    except FileNotFoundError:
+        print(f"Error: The file at {file_path} was not found.")
+    except IndexError:
+        print("Error: The file content is not formatted correctly.")
+    
+    return streak_data
