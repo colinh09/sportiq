@@ -1,16 +1,14 @@
 "use client"
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import ChatRoom from '@/components/Chat/ChatRoom'
-import { Sidebar } from '@/components/Layout/Sidebar/Sidebar'
-import { cn } from '@/lib/utils'
-import { Navbar } from '@/components/Layout/Navbar/Navbar'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
-  return (
-    <>
-      <Navbar />
-    </>
-  )
+  const router = useRouter()
+
+  useEffect(() => {
+    router.push('/dashboard')
+  }, [router])
+
+  return null  // or a loading state if you prefer
 }

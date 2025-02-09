@@ -15,7 +15,19 @@ export async function GET(request: Request) {
 
     const { data, error } = await supabase
       .from('UserPlayers')
-      .select('*')
+      .select(`
+        userId,
+        playerId,
+        Players (
+          name,
+          headshotUrl,
+          team,
+          PlayerPositions (
+            position_code,
+            position
+          )
+        )
+      `)
       .eq('userId', userId)
 
     if (error) throw error

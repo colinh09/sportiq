@@ -5,8 +5,10 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-
     ignoreBuildErrors: true,
+  },
+  images: {
+    domains: ['a.espncdn.com'],
   },
 }
 

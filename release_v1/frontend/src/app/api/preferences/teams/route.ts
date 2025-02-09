@@ -15,7 +15,20 @@ export async function GET(request: Request) {
 
     const { data, error } = await supabase
       .from('UserTeams')
-      .select('*')
+      .select(`
+        userId,
+        teamId,
+        Teams (
+          Logo,
+          teamAbbreviation,
+          teamUrl,
+          teamSchedule,
+          rosterUrl,
+          lastYearSchedule,
+          displayName,
+          standing
+        )
+      `)
       .eq('userId', userId)
 
     if (error) throw error

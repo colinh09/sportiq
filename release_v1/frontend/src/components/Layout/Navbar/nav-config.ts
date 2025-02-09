@@ -28,7 +28,7 @@ export const navConfig: NavConfig = {
     {
       type: 'link',
       title: 'Home',
-      href: '/',
+      href: '/dashboard',
       icon: Home
     },
     {
