@@ -9,7 +9,17 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CalendarDays, Trophy, Users, BookMarked } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { 
+  CalendarDays, 
+  Trophy, 
+  Users, 
+  BookMarked, 
+  GraduationCap,
+  BookOpen,
+  Edit3,
+  BarChart3
+} from 'lucide-react';
 import { UserTeamPreference, UserPlayerPreference, UserModulePreference, ApiResponse } from '@/lib/api/types';
 
 interface PreferencesState {
@@ -19,7 +29,19 @@ interface PreferencesState {
 }
 
 const Dashboard = () => {
-  const { user, username, streak, streakUpdatedAt } = useAuth();
+  const { 
+    user, 
+    username, 
+    streak, 
+    streakUpdatedAt,
+    moduleCreationLimit,
+    modulesAdded,
+    modulesCompleted,
+    modulesCreated,
+    canCreateMoreModules,
+    completionRate
+  } = useAuth();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [preferences, setPreferences] = useState<PreferencesState>({
@@ -93,6 +115,74 @@ const Dashboard = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Module Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">
+              Added Modules
+            </CardTitle>
+            <BookOpen className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{modulesAdded}</div>
+            <Progress className="mt-2" value={modulesCompleted / modulesAdded * 100} />
+            <p className="text-xs text-muted-foreground mt-2">
+              {modulesCompleted} completed
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">
+              Created Modules
+            </CardTitle>
+            <Edit3 className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{modulesCreated}</div>
+            <Progress className="mt-2" value={modulesCreated / moduleCreationLimit * 100} />
+            <p className="text-xs text-muted-foreground mt-2">
+              {moduleCreationLimit - modulesCreated} remaining
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">
+              Completion Rate
+            </CardTitle>
+            <GraduationCap className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{completionRate}%</div>
+            <Progress className="mt-2" value={completionRate} />
+            <p className="text-xs text-muted-foreground mt-2">
+              {modulesCompleted} of {modulesAdded} modules
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">
+              Module Limit
+            </CardTitle>
+            <BarChart3 className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{moduleCreationLimit}</div>
+            <div className="mt-2">
+              <Badge variant={canCreateMoreModules ? "secondary" : "destructive"}>
+                {canCreateMoreModules ? "Can Create More" : "Limit Reached"}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Preferences Tabs */}
       <Tabs defaultValue="teams" className="w-full">

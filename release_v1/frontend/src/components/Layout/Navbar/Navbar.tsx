@@ -79,13 +79,13 @@ export const Navbar = ({ config = navConfig }: NavbarProps) => {
 
         <div className="flex w-[200px] items-center">
           <Link href="/" className="flex items-center gap-2">
-            <img src={config.branding.logo} alt="Logo" className="h-8 w-8" />
+            <img src={config.branding.logo} alt="Logo" className="h-12 w-12" />
             <span className="font-semibold">{config.branding.text}</span>
           </Link>
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2 hidden lg:block">
-          <div className="w-[300px]">
+          <div className="w-[365px]">
             {user ? <SearchBar userId={user.id} /> : <SearchBar />}
           </div>
         </div>

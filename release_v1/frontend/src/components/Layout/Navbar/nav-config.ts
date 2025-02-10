@@ -20,10 +20,10 @@ export interface NavConfig {
 
 export const navConfig: NavConfig = {
   branding: {
-    logo: "/SportIQ_Logo.jpg",
-    text: "SportIQ"
+    logo: "/SportIQ_Logo.png",
+    text: ""
   },
-  leftNav: [], // Empty since we only want logo on left
+  leftNav: [],
   rightNav: [
     {
       type: 'link',
@@ -43,11 +43,11 @@ export const navConfig: NavConfig = {
       href: '/modules',
       icon: Layout
     },
-    {
-      type: 'link',
-      title: 'About Us',
-      href: '/about',
-      icon: Info
-    }
+    // {
+    //   type: 'link',
+    //   title: 'About Us',
+    //   href: '/about',
+    //   icon: Info
+    // }
   ]
 };

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -10,12 +10,17 @@ import { TeamCard } from '@/components/Card/TeamCard'
 import { useToast } from '@/components/ui/hooks/use-toast'
 import { ToastAction } from '@/components/ui/toast'
 import { useAuth } from '@/contexts/auth-context'
+import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export default function TeamsPage() {
   const router = useRouter()
   const { toast } = useToast()
   const { user } = useAuth()
   const [teams, setTeams] = useState<Team[]>([])
+  const [filteredTeams, setFilteredTeams] = useState<Team[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortOrder, setSortOrder] = useState('asc')
   const [loading, setLoading] = useState(true)
   const [userPreferences, setUserPreferences] = useState<string[]>([])
 
@@ -28,6 +33,7 @@ export default function TeamsPage() {
         ])
         
         setTeams(teamsData)
+        setFilteredTeams(teamsData)
         setUserPreferences(preferencesData.data.map((pref: any) => pref.teamId))
         setLoading(false)
       } catch (error) {
@@ -38,6 +44,26 @@ export default function TeamsPage() {
 
     fetchData()
   }, [user])
+
+  // Filter and sort teams based on search query and sort order
+  useEffect(() => {
+    let result = [...teams]
+    
+    // Apply search filter
+    if (searchQuery) {
+      result = result.filter(team =>
+        team.displayName.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    }
+    
+    // Apply sorting
+    result.sort((a, b) => {
+      const comparison = a.displayName.localeCompare(b.displayName)
+      return sortOrder === 'asc' ? comparison : -comparison
+    })
+    
+    setFilteredTeams(result)
+  }, [teams, searchQuery, sortOrder])
 
   const handleTeamClick = (team: Team) => {
     window.scrollTo(0, 0)
@@ -109,13 +135,34 @@ export default function TeamsPage() {
   }
 
   if (loading) {
+    return <div>Loading...</div>
   }
 
   return (
     <div className="container mx-auto text-center py-6">
-      <h1 className="text-3xl font-bold mb-6">MLB Teams</h1>
+      <h1 className="text-3xl font-bold mb-6">Major League Baseball (MLB)</h1>
+      
+      <div className="flex gap-4 mb-6 max-w-2xl mx-auto">
+        <Input
+          type="text"
+          placeholder="Search teams..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="flex-1"
+        />
+        <Select value={sortOrder} onValueChange={setSortOrder}>
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="Sort order" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="asc">A to Z</SelectItem>
+            <SelectItem value="desc">Z to A</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <Grid>
-        {teams.map((team) => (
+        {filteredTeams.map((team) => (
           <TeamCard
             key={team.teamId}
             team={team}

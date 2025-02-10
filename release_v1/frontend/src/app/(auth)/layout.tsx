@@ -19,7 +19,7 @@ export default function AuthLayout({
   }, [user, router])
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 text-sm md:text-base lg:text-lg">
       <div className="container mx-auto flex min-h-screen items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
           {children}

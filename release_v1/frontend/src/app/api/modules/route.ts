@@ -130,17 +130,15 @@ export async function GET(request: Request) {
         // Create a map of userId to username
         const usernameMap = new Map(userProfiles.map(profile => [profile.userId, profile.username]));
 
-        // Search for modules created by users whose username matches the search
-        const { data: userModules, error: usersError } = await supabase
+        // Search users who have created modules
+        const { data: users, error: usersError } = await supabase
           .from('UserProfiles')
           .select(`
             userId,
             username,
-            CustomModules!CustomModules_userId_fkey1 (
+            CustomModules (
               moduleId,
-              title,
-              topic,
-              difficulty
+              title
             )
           `)
           .ilike('username', `%${keywords}%`)
@@ -150,22 +148,6 @@ export async function GET(request: Request) {
           console.error('Users search error:', usersError)
           throw usersError
         }
-
-        // Flatten the results to get all modules from matching users
-        const userCreatedModules = userModules?.flatMap(user => 
-          (user.CustomModules || []).map(module => ({
-            value: module.title,
-            type: 'module' as const,
-            id: module.moduleId,
-            creator: user.username,
-            keywords: [
-              module.title.toLowerCase(),
-              module.topic.toLowerCase(),
-              `difficulty:${module.difficulty}`,
-              `creator:${user.username.toLowerCase()}`
-            ]
-          }))
-        ) || [];
 
         results = [
           // Module results from title/concept search
@@ -180,8 +162,14 @@ export async function GET(request: Request) {
               `difficulty:${m.difficulty}`
             ]
           })),
-          // Modules created by matching users
-          ...userCreatedModules
+          // User results with their module count
+          ...(users || []).map(u => ({
+            value: `${u.username} (${u.CustomModules?.length || 0} modules)`,
+            type: 'module' as const,
+            id: u.userId,
+            isUser: true,
+            keywords: [u.username.toLowerCase()]
+          }))
         ]
         break
       }
