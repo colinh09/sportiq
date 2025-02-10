@@ -108,12 +108,6 @@ const Dashboard = () => {
             <span className="text-sm text-muted-foreground">day streak</span>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="text-sm text-muted-foreground flex items-center gap-2">
-            <CalendarDays className="h-4 w-4" />
-            Last active: {streakUpdatedAt ? new Date(streakUpdatedAt).toLocaleDateString() : 'Never'}
-          </div>
-        </CardContent>
       </Card>
 
       {/* Module Stats Grid */}
