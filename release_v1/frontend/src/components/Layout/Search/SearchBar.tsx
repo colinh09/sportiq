@@ -77,7 +77,7 @@ export const SearchBar = ({
 
       const teamIds = teamsResponse.data.map((team: any) => team.teamId);
       const playerIds = playersResponse.data.map((player: any) => player.playerId);
-      const moduleIds = modulesResponse.modules.map(module => module.moduleId);
+      const moduleIds = modulesResponse.modules.map((module: any) => module.moduleId);
 
       setPreferences({
         teams: teamIds,
@@ -179,7 +179,7 @@ export const SearchBar = ({
           const modulesResponse = await modulesApi.getUserModules({ userId, limit: 1000 });
           setPreferences(prev => ({
             ...prev,
-            modules: modulesResponse.modules.map(module => module.moduleId)
+            modules: modulesResponse.modules.map((module: any) => module.moduleId)
           }));
         } else {
           await modulesApi.addUserModule(userId, moduleId);
@@ -187,7 +187,7 @@ export const SearchBar = ({
           const modulesResponse = await modulesApi.getUserModules({ userId, limit: 1000 });
           setPreferences(prev => ({
             ...prev,
-            modules: modulesResponse.modules.map(module => module.moduleId)
+            modules: modulesResponse.modules.map((module: any) => module.moduleId)
           }));
         }
       }
