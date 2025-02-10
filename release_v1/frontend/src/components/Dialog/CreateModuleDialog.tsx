@@ -125,7 +125,7 @@ const CreateModuleDialog = ({ onModuleCreated }: CreateModuleDialogProps) => {
         <DialogHeader>
           <DialogTitle>Create Learning Module</DialogTitle>
           <DialogDescription>
-            Create a new baseball learning module with AI-generated content
+            Create a new baseball learning module with AI-generated content with an October 2023 knowledge cutoff.
           </DialogDescription>
         </DialogHeader>
         

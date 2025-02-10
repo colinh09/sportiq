@@ -143,9 +143,6 @@ export default function ModuleStudyPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 min-w-0">
                   <h1 className="text-lg font-semibold truncate">{module.title}</h1>
-                  <p className="text-sm text-muted-foreground whitespace-nowrap">
-                    • Created by {module.creator_username}
-                  </p>
                 </div>
                 <div className="flex items-center gap-2 ml-2 flex-none">
                   <Badge variant="outline" className="flex items-center gap-1 text-xs">

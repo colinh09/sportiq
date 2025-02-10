@@ -9,7 +9,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/components/ui/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
+import { Loader2, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Grid from '@/components/Grid/Grid';
 
@@ -150,56 +150,66 @@ export default function ModulesPage() {
             </div>
           ) : (
             <div className="h-full flex flex-col">
-              {/* Grid Container */}
-              <Grid className="mb-4">
-                {modules.map((module, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-sm h-full">
-                    <ModuleCard 
-                      module={module} 
-                      onDelete={fetchModules}
-                    />
-                  </div>
-                ))}
-              </Grid>
-
-              {/* Pagination */}
-              {metadata && metadata.total_pages > 1 && (
-                <div className="flex justify-center gap-2 mt-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={currentPage === 1}
-                    onClick={() => handlePageChange(currentPage - 1)}
-                  >
-                    Previous
-                  </Button>
-                  
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: metadata.total_pages }, (_, i) => i + 1).map((page) => (
-                      <Button
-                        key={page}
-                        size="sm"
-                        variant={currentPage === page ? "default" : "outline"}
-                        onClick={() => handlePageChange(page)}
-                        className="hidden sm:inline-flex w-8"
-                      >
-                        {page}
-                      </Button>
-                    ))}
-                    <span className="sm:hidden text-sm">
-                      Page {currentPage} of {metadata.total_pages}
-                    </span>
-                  </div>
-
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={!metadata.has_more}
-                    onClick={() => handlePageChange(currentPage + 1)}
-                  >
-                    Next
-                  </Button>
+              {modules.length === 0 ? (
+                <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-6 text-center">
+                  <p className="text-muted-foreground">
+                    No modules to display. Create or add your first module to get started
+                  </p>
                 </div>
+              ) : (
+                <>
+                  {/* Grid Container */}
+                  <Grid className="mb-4">
+                    {modules.map((module, index) => (
+                      <div key={index} className="bg-white rounded-lg shadow-sm h-full">
+                        <ModuleCard 
+                          module={module} 
+                          onDelete={fetchModules}
+                        />
+                      </div>
+                    ))}
+                  </Grid>
+
+                  {/* Pagination */}
+                  {metadata && metadata.total_pages > 1 && (
+                    <div className="flex justify-center gap-2 mt-4">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage === 1}
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      >
+                        Previous
+                      </Button>
+                      
+                      <div className="flex items-center gap-1">
+                        {Array.from({ length: metadata.total_pages }, (_, i) => i + 1).map((page) => (
+                          <Button
+                            key={page}
+                            size="sm"
+                            variant={currentPage === page ? "default" : "outline"}
+                            onClick={() => handlePageChange(page)}
+                            className="hidden sm:inline-flex w-8"
+                          >
+                            {page}
+                          </Button>
+                        ))}
+                        <span className="sm:hidden text-sm">
+                          Page {currentPage} of {metadata.total_pages}
+                        </span>
+                      </div>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={!metadata.has_more}
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}

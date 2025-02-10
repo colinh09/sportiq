@@ -243,7 +243,7 @@ const Dashboard = () => {
                     ) : (
                       preferences.players.map((pref) => (
                         <div key={pref.playerId} className="flex items-center gap-2 bg-secondary rounded-lg p-2">
-                          <Avatar className="h-8 w-8">
+                          <Avatar className="h-8 w-10">
                             <AvatarImage src={pref.Players.headshotUrl} alt={pref.Players.name} />
                             <AvatarFallback>{pref.Players.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                           </Avatar>

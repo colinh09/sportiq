@@ -21,7 +21,6 @@ export default function TeamsPage() {
   const [filteredTeams, setFilteredTeams] = useState<Team[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOrder, setSortOrder] = useState('asc')
-  const [loading, setLoading] = useState(true)
   const [userPreferences, setUserPreferences] = useState<string[]>([])
 
   useEffect(() => {
@@ -35,10 +34,8 @@ export default function TeamsPage() {
         setTeams(teamsData)
         setFilteredTeams(teamsData)
         setUserPreferences(preferencesData.data.map((pref: any) => pref.teamId))
-        setLoading(false)
       } catch (error) {
         console.error('Error fetching data:', error)
-        setLoading(false)
       }
     }
 
@@ -132,10 +129,6 @@ export default function TeamsPage() {
       })
       console.error('Error removing team from list:', error)
     }
-  }
-
-  if (loading) {
-    return <div>Loading...</div>
   }
 
   return (
