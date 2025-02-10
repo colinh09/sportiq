@@ -2,13 +2,11 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { User } from '@supabase/supabase-js'
-import { createClient } from '@supabase/supabase-js'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { usersApi } from '@/lib/api/users'
 import { UserProfile } from '@/lib/api/types'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
+const supabase = createClientComponentClient()
 
 interface AuthContextType {
   user: User | null;
@@ -154,9 +152,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
+
       setUser(null);
       setIsAuthenticated(false);
       setUsername(null);
@@ -168,7 +165,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setModulesCreated(0);
       setCanCreateMoreModules(true);
       setCompletionRate(0);
+
+      window.location.href = '/login';
     } catch (error) {
+      console.error('Error signing out:', error);
       throw error;
     }
   };

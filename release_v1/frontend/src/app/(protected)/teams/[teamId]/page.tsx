@@ -32,7 +32,6 @@ export default function TeamDetailsPage() {
   const params = useParams()
   const { toast } = useToast()
   const { user } = useAuth()
-  const [loading, setLoading] = useState(true)
   const [selectedPosition, setSelectedPosition] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [userPlayerPreferences, setUserPlayerPreferences] = useState<number[]>([])
@@ -50,7 +49,6 @@ export default function TeamDetailsPage() {
       const teamId = params.teamId as string
       
       try {
-        setLoading(true)
         const [details, preferencesData] = await Promise.all([
           teamsApi.getTeamDetails(teamId),
           user ? preferencesApi.getPlayerPreferences(user.id) : Promise.resolve({ data: [] })
@@ -62,7 +60,6 @@ export default function TeamDetailsPage() {
       } catch (error) {
         console.error('Error fetching data:', error)
       } finally {
-        setLoading(false)
       }
     }
 
@@ -141,13 +138,6 @@ export default function TeamDetailsPage() {
       ...prev,
       [section]: !prev[section]
     }))
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-      </div>
-    )
   }
 
   if (!teamDetails) {

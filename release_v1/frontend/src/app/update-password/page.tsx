@@ -58,7 +58,7 @@ export default function UpdatePasswordPage() {
         title: "Success",
         description: "Password updated successfully"
       })
-      router.push('/auth/login')
+      router.push('/login')
       
     } catch (error: any) {
       console.error('Update password error:', error)

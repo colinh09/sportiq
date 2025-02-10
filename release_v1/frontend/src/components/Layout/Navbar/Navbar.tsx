@@ -77,7 +77,7 @@ export const Navbar = ({ config = navConfig }: NavbarProps) => {
           <Menu className="h-6 w-6" />
         </button>
 
-        <div className="flex w-[200px] items-center">
+        <div className="flex w-[75px] items-center">
           <Link href="/" className="flex items-center gap-2">
             <img src={config.branding.logo} alt="Logo" className="h-12 w-12" />
             <span className="font-semibold">{config.branding.text}</span>

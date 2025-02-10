@@ -122,7 +122,7 @@ const FlashcardCarousel: React.FC<FlashcardCarouselProps> = ({
         <div className="flex justify-center">
           <Button 
             onClick={onComplete}
-            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 mb-4"
           >
             Ready for Quiz
           </Button>

@@ -124,7 +124,7 @@ export default function ModuleStudyPage() {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden h-full">
+    <div className="flex flex-col h-full">
       {/* Header - fixed height */}
       <header className="border-b bg-card/50 backdrop-blur-sm flex-none">
         <div className="max-w-7xl mx-auto px-4 py-2">
@@ -190,7 +190,7 @@ export default function ModuleStudyPage() {
       </header>
 
       {/* Main content area - flexible height */}
-      <main className="flex-1 flex overflow-hidden">
+      <main className="flex-1 flex">
         <div className="max-w-7xl mx-auto w-full flex items-center px-4 py-4">
           {/* Content grid */}
           <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 items-center max-h-[calc(100vh-10rem)]">
