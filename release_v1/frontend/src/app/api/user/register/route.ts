@@ -4,7 +4,7 @@ import { supabase } from '@/app/api/db';
 export async function POST(request: Request) {
   try {
     const { userId, username } = await request.json();
-
+    console.log(userId, username)
     if (!userId || !username) {
       return NextResponse.json(
         { error: 'Missing required fields' },

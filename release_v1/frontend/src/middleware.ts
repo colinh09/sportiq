@@ -6,6 +6,11 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
   const supabase = createMiddlewareClient({ req, res })
 
+  // Skip auth check for /api/user/fetch
+  if (req.nextUrl.pathname === '/api/user/fetch') {
+    return res
+  }
+
   const { data: { session } } = await supabase.auth.getSession()
 
   if (!session && req.nextUrl.pathname.startsWith('/api')) {

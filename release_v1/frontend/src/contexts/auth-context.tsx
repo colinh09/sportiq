@@ -196,8 +196,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await supabase.auth.signOut({ scope: 'local' })
 
       // Force a complete page reload after clearing everything
+      window.location.href = '/login'
     } catch (error) {
       console.error('Error signing out:', error)
+      // Even if there's an error, try to force logout
+      window.location.href = '/login'
     }
   }
 
