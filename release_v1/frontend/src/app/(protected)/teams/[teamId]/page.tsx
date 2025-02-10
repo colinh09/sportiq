@@ -140,14 +140,6 @@ export default function TeamDetailsPage() {
     }))
   }
 
-  if (!teamDetails) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl">Team not found</div>
-      </div>
-    )
-  }
-
   const positions = Object.values(
     teamDetails.players.reduce((acc: any, player: any) => {
       const key = `${player.position}-${player.position_code}`
